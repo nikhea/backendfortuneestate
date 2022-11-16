@@ -2,7 +2,7 @@ import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-
 dotenv.config();
 import express from "express";
 import cors from "cors";
-import  {db}  from "./db/db.js";
+import  {db}  from "./src/db/index.js";
 // db()
 const app = express();
 // Init Middleware
