@@ -3,7 +3,7 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import { db } from "./src/db/index.js";
-// db()
+import Continents from "./src/routes/continent.routes.js";
 const app = express();
 app.get("/", (req, res) => {
   res.json({ status: "2000" });
@@ -12,6 +12,9 @@ app.get("/", (req, res) => {
 app.use(express.json({ extended: false }));
 app.use(cors());
 app.options("*", cors());
+
+
+app.use("/api/continent", Continents)
 let port = process.env.PORT;
 app.listen(port, () => {
   console.log("Server is up and running on port number " + port);

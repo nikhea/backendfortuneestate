@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const continentSchema = new Schema(
   {
@@ -19,6 +19,6 @@ const continentSchema = new Schema(
   { timestamps: true }
 );
 
-let continents = mongoose.model("continents", continentSchema);
+const Continents = mongoose.model("continents", continentSchema);
 
-export default continents;
+export default Continents;
