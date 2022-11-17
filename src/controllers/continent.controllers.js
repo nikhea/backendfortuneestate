@@ -11,7 +11,6 @@ export const getContinents = async (req, res, next) => {
     };
     res.json(response);
   } catch (error) {
-    console.error(error.message);
     let response = {
       statuscode: 400,
       data: [],
@@ -40,7 +39,6 @@ export const createContinent = async (req, res, next) => {
       res.json(response);
     }
   } catch (error) {
-    console.error(error.message);
     let response = {
       statuscode: 400,
       data: [],
@@ -63,7 +61,6 @@ export const getOneContinent = async (req, res, next) => {
     };
     res.json(response);
   } catch (error) {
-    console.error(error.message);
     let response = {
       statuscode: 400,
       data: [],
@@ -97,7 +94,6 @@ export const UpdateOneContinent = async (req, res, next) => {
     };
     res.json(response);
   } catch (error) {
-    console.error(error.message);
     let response = {
       statuscode: 400,
       data: [],
@@ -112,8 +108,6 @@ export const removeOneContinent = async (req, res, next) => {
   try {
     let continents = await Continents.findById(id);
     await continents.remove();
-    console.log(id + " id");
-    console.log(continents + " continents");
     let response = {
       success: "true",
       statuscode: 200,
@@ -122,7 +116,6 @@ export const removeOneContinent = async (req, res, next) => {
     };
     res.json(response);
   } catch (error) {
-    console.error(error.message);
     let response = {
       statuscode: 400,
       data: [],
