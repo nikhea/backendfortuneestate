@@ -19,10 +19,14 @@ const countrySchema = new Schema(
       type: String,
       require: true,
     },
+    continent: {
+      type: Schema.Types.ObjectId,
+      ref: "Continents",
+    },
   },
   { timestamps: true }
 );
 
-const countries = mongoose.model("countries", countrySchema);
+const countries = mongoose.model("Countries", countrySchema);
 
 export default countries;

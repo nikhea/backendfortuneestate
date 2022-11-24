@@ -2,7 +2,7 @@ import Continents from "../models/continent.model.js";
 
 export const getContinents = async (req, res, next) => {
   try {
-    let continents = await Continents.find();
+    let continents = await Continents.find().populate("countries");
     let response = {
       success: "true",
       statuscode: 200,
@@ -51,7 +51,7 @@ export const createContinent = async (req, res, next) => {
 export const getOneContinent = async (req, res, next) => {
   const id = req.params.id;
   try {
-    let continent = await Continents.findById(id);
+    let continent = await Continents.findById(id).populate("countries");
 
     let response = {
       success: "true",

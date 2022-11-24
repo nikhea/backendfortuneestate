@@ -2,7 +2,7 @@ import Countries from "../models/country.model.js";
 
 export const getCountries = async (req, res, next) => {
   try {
-    let countries = await Countries.find();
+    let countries = await Countries.find().populate("continent");
     let response = {
       success: "true",
       statuscode: 200,
@@ -29,6 +29,7 @@ export const createCountry = async (req, res, next) => {
       bgImage: req.body.bgImage,
       image: req.body.image,
     });
+    console.log(country + " country");
     await country.save();
     if (country) {
       let response = {
@@ -104,7 +105,7 @@ export const UpdateOneCountry = async (req, res, next) => {
     return res.json(response);
   }
 };
-export const removeOnecountry = async (req, res, next) => {
+export const removeOneCountry = async (req, res, next) => {
   const id = req.params.id;
   try {
     let country = await Countries.findById(id);

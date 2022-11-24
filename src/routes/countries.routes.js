@@ -1,40 +1,40 @@
 import express from "express";
 import {
-  getContinents,
-  createContinent,
-  getOneContinent,
-  UpdateOneContinent,
-  removeOneContinent,
+  getCountries,
+  createCountry,
+  getOneCountry,
+  UpdateOneCountry,
+  removeOneCountry,
 } from "../controllers/countries.controllers.js";
 const router = express.Router();
 // @route     GET api/continent
 // @desc      Get  all continents
 //@access     private
 //role        admin
-router.get("/", getContinents);
+router.get("/", getCountries);
 
 // @route     POST api/continent
 // @desc      create a new continent
 //@access     Private
 //role        admin
-router.post("/", createContinent);
+router.post("/", createCountry);
 
 // @route     GET api/continent
 // @desc      GET one continent
 //@access     private
 //role        admin
-router.get("/:id", getOneContinent);
+router.get("/:id", getOneCountry);
 
 // @route     POST api/continent
 // @desc      create a new continent
 //@access     private
 //role        admin
-router.put("/:id", UpdateOneContinent);
+router.put("/:id", UpdateOneCountry);
 
 // @route     GET api/continent
 // @desc      GET one continent
 //@access     private
 //role        admin
-router.delete("/:id", removeOneContinent);
+router.delete("/:id", removeOneCountry);
 
 export default router;
