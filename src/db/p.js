@@ -34,3 +34,49 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 //    db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // const { MongoClient, ServerApiVersion } = require('mongodb');
 // const { MongoClient, ServerApiVersion } = require('mongodb');
+'
+
+
+
+
+export const createCountry = async (req, res, next) => {
+  try {
+    let country = new Countries({
+      name: req.body.name,
+      description: req.body.description,
+      bgImage: req.body.bgImage,
+      image: req.body.image,
+    });
+    const Country = await country.save();
+    const Continent = Continents.findOne({ name: Country.name });
+    if (Continent) {
+      continent.Countries.push(Country);
+      continent.save();
+      let response = {
+        success: "true",
+        statuscode: 200,
+        data: country,
+        message: "success",
+      };
+      // if (country) {
+      //   let response = {
+      //     success: "true",
+      //     statuscode: 200,
+      //     data: country,
+      //     message: "success",
+      //   };
+      res.json(response);
+    }
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed",
+    };
+    return res.json(response);
+  }
+};
+
+
+'

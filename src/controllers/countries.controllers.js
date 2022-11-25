@@ -1,5 +1,5 @@
 import Countries from "../models/country.model.js";
-
+import Continents from "../models/continent.model.js";
 export const getCountries = async (req, res, next) => {
   try {
     let countries = await Countries.find().populate("continent");
@@ -22,20 +22,26 @@ export const getCountries = async (req, res, next) => {
 };
 
 export const createCountry = async (req, res, next) => {
+  const ContinentsName = req.params.name;
+  const p = new RegExp("^" + ContinentsName + "$", "i");
+  console.log(p);
   try {
-    let country = new Countries({
-      name: req.body.name,
-      description: req.body.description,
-      bgImage: req.body.bgImage,
-      image: req.body.image,
-    });
-    console.log(country + " country");
-    await country.save();
-    if (country) {
+    const continent = await Continents.findOne({ name: p });
+    console.log(continent);
+    if (continent) {
+      const Countrys = new Countries({
+        name: req.body.name,
+        description: req.body.description,
+        bgImage: req.body.bgImage,
+        image: req.body.image,
+      });
+      const countrys = await Countrys.save();
+      continent.countries.push(countrys);
+      await continent.save();
       let response = {
         success: "true",
         statuscode: 200,
-        data: country,
+        data: countrys,
         message: "success",
       };
       res.json(response);

@@ -15,7 +15,7 @@ app.use(cors());
 app.options("*", cors());
 
 app.use("/api/continents", Continents);
-app.use("/api/countries", Countries);
+app.use("/api/", Countries);
 let port = process.env.PORT;
 app.listen(port, () => {
   console.log("Server is up and running on port number " + port);
