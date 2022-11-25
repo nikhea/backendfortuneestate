@@ -3,6 +3,7 @@ import Continents from "../models/continent.model.js";
 export const getCountries = async (req, res, next) => {
   try {
     let countries = await Countries.find().populate("continent");
+    console.log(countries);
     let response = {
       success: "true",
       statuscode: 200,
@@ -34,6 +35,7 @@ export const createCountry = async (req, res, next) => {
         description: req.body.description,
         bgImage: req.body.bgImage,
         image: req.body.image,
+        continent: continent._id,
       });
       const countrys = await Countrys.save();
       continent.countries.push(countrys);
@@ -59,7 +61,10 @@ export const createCountry = async (req, res, next) => {
 export const getOneCountry = async (req, res, next) => {
   const id = req.params.id;
   try {
-    let country = await Countries.findById(id);
+    const p = new RegExp("^" + req.params.name + "$", "i");
+    let country = await Countries.find({ name: p }).populate("continent");
+    // console.log(...Countries);
+    // let country = await Countries.findById(id);
 
     let response = {
       success: "true",

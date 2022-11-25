@@ -23,7 +23,7 @@ router.post("/", createContinent);
 // @desc      GET one continent
 //@access     private
 //role        admin
-router.get("/:id", getOneContinent);
+router.get("/:name", getOneContinent);
 
 // @route     POST api/continent
 // @desc      create a new continent

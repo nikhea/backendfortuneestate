@@ -53,9 +53,9 @@ export const createContinent = async (req, res, next) => {
 export const getOneContinent = async (req, res, next) => {
   const id = req.params.id;
   try {
-    let continent = await Continents.findById(id).populate("countries");
-    // const p = new RegExp("^" + req.params.name + "$", "i");
-    // let continent = await Continents.find({ name: p }).populate("countries");
+    // let continent = await Continents.findById(id).populate("countries");
+    const p = new RegExp("^" + req.params.name + "$", "i");
+    let continent = await Continents.find({ name: p }).populate("countries");
     console.log(p + " continent");
     let response = {
       success: "true",
