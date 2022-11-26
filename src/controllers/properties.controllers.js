@@ -50,7 +50,7 @@ export const createProperties = async (req, res, next) => {
         images: req.body.images,
         image: req.body.image,
         address: {
-          country: req.body.country,
+          country: CountryName,
           street: req.body.street,
           city: req.body.city,
         },

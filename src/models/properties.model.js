@@ -57,13 +57,13 @@ const propertiesSchema = new Schema(
     },
     listingType: {
       type: String,
-      enum: [ListingType.forRent, ListingType.forRent],
+      // enum: [ListingType.forSale, ListingType.forRent],
       lowercase: true,
       require: true,
     },
     view: {
       type: String,
-      enum: [View.Garden, View.sea, View.street],
+      enum: [View.garden, View.sea, View.street],
       lowercase: true,
       require: true,
     },
