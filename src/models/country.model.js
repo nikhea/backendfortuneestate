@@ -24,6 +24,12 @@ const countrySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Continents",
     },
+    properties: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Properties",
+      },
+    ],
   },
   { timestamps: true }
 );
