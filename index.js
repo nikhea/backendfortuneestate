@@ -5,6 +5,7 @@ import cors from "cors";
 import { db } from "./src/db/index.js";
 import Continents from "./src/routes/continent.routes.js";
 import Countries from "./src/routes/countries.routes.js";
+import Properties from "./src/routes/properties.routes.js";
 const app = express();
 app.get("/", (req, res) => {
   res.json({ status: "2000" });
@@ -16,6 +17,7 @@ app.options("*", cors());
 
 app.use("/api/continents", Continents);
 app.use("/api/", Countries);
+app.use("/api/properties", Properties);
 let port = process.env.PORT;
 app.listen(port, () => {
   console.log("Server is up and running on port number " + port);
