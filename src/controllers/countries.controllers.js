@@ -62,7 +62,7 @@ export const getOneCountry = async (req, res, next) => {
   const id = req.params.id;
   try {
     const p = new RegExp("^" + req.params.name + "$", "i");
-    let country = await Countries.find({ name: p }).populate("continent");
+    let country = await Countries.findOne({ name: p }).populate("continent");
     // console.log(...Countries);
     // let country = await Countries.findById(id);
 
