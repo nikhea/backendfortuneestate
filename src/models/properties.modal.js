@@ -58,13 +58,12 @@ const propertiesSchema = new Schema(
     },
     View: {
       type: String,
-      enum: [ViewType.forRent, View.forSale],
+      enum: [View.Garden, View.sea, View.street],
       lowercase: true,
       require: true,
     },
     price: {
       type: Number,
-      // lowercase: true,
       require: true,
     },
     priceSymbol: {
@@ -74,22 +73,17 @@ const propertiesSchema = new Schema(
     },
     bedrooms: {
       type: Number,
-      // lowercase: true,
       require: true,
     },
     bathrooms: {
       type: Number,
-      // lowercase: true,
       require: true,
     },
     halfBathrooms: {
       type: Number,
-      // lowercase: true,
-      require: true,
     },
     squareFootage: {
       type: Number,
-      // lowercase: true,
       require: true,
     },
     squareSymbol: {
@@ -99,26 +93,18 @@ const propertiesSchema = new Schema(
     },
     yearBuilt: {
       type: Number,
-      // lowercase: true,
-      require: true,
     },
     lotArea: {
-      type: Number,
-      // lowercase: true,
-      require: true,
+      type: Number
     },
     lotAreaSymbol: {
       type: String,
-      lowercase: true,
-      require: true,
     },
     images: {
       type: [String],
-      // require: true,
     },
     image: {
       type: String,
-      // require: true,
     },
     street: addressSchema,
     countries: {
