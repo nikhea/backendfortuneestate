@@ -1,5 +1,10 @@
 import * as mongoose from "mongoose";
-// import { } from "../utils/constants";
+import {
+  category,
+  propertyType,
+  ListingType,
+  View,
+} from "../utils/constants.js";
 
 const Schema = mongoose.Schema;
 
@@ -34,31 +39,31 @@ const propertiesSchema = new Schema(
     },
     category: {
       type: String,
-      // enum: [category.commercial, category.land, category.residential],
+      enum: [category.commercial, category.land, category.residential],
       lowercase: true,
       require: true,
     },
 
     propertyType: {
       type: String,
-      // enum: [
-      //   propertyType.office,
-      //   propertyType.apartment,
-      //   propertyType.land,
-      //   propertyType.villa,
-      // ],
+      enum: [
+        propertyType.office,
+        propertyType.apartment,
+        propertyType.land,
+        propertyType.villa,
+      ],
       lowercase: true,
       require: true,
     },
     listingType: {
       type: String,
-      // enum: [ListingType.forRent, ListingType.forRent],
+      enum: [ListingType.forRent, ListingType.forRent],
       lowercase: true,
       require: true,
     },
     view: {
       type: String,
-      // enum: [View.Garden, View.sea, View.street],
+      enum: [View.Garden, View.sea, View.street],
       lowercase: true,
       require: true,
     },
@@ -95,7 +100,7 @@ const propertiesSchema = new Schema(
       type: Number,
     },
     lotArea: {
-      type: Number
+      type: Number,
     },
     lotAreaSymbol: {
       type: String,
@@ -105,6 +110,7 @@ const propertiesSchema = new Schema(
     },
     image: {
       type: String,
+      require: true,
     },
     address: addressSchema,
     country: {
