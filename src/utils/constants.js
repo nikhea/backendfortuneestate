@@ -4,30 +4,30 @@ export const roles = {
   client: "CLIENT",
 };
 export const category = {
-  residential: "RESIDENTIAL",
-  commercial: "COMMERCIAL",
-  land: "LAND",
+  residential: "residential",
+  commercial: "commercial",
+  land: "land",
 };
 export const propertyType = {
-  office: "OFFICE",
-  apartment: "APARTMENT",
-  land: "LAND",
-  villa: "VILLA",
+  office: "office",
+  apartment: "apartment",
+  land: "land",
+  villa: "villa",
 };
 export const ListingType = {
-  forSale: "FOR SALE",
-  forRent: "FOR RENT",
+  forSale: "for sale",
+  forRent: "for rent",
 };
 export const View = {
-  Garden: "GARDEN",
-  street: "STREET",
-  sea: "SEA",
+  garden: "garden",
+  street: " street",
+  sea: "sea",
 };
 export const measurement = {
-  Sqft: "SQFT",
+  sqft: "sqft",
   m2: "M2",
-  ACRE: "ACRE",
-  HECTARE: "HECTARE",
+  acre: "acre",
+  hectare: "hectare",
 };
 
 export const currencySymbol = {
