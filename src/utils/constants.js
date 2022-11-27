@@ -15,8 +15,8 @@ export const propertyType = {
   villa: "villa",
 };
 export const ListingType = {
-  forSale: "for sale",
-  forRent: "for rent",
+  forSale: "sale",
+  forRent: "rent",
 };
 export const View = {
   garden: "garden",

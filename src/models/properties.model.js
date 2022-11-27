@@ -1,4 +1,5 @@
 import * as mongoose from "mongoose";
+import slug from "mongoose-slug-generator";
 import {
   category,
   propertyType,
@@ -6,6 +7,7 @@ import {
   View,
 } from "../utils/constants.js";
 
+mongoose.plugin(slug);
 const Schema = mongoose.Schema;
 
 const addressSchema = new Schema({
@@ -22,17 +24,25 @@ const addressSchema = new Schema({
     required: true,
   },
 });
+const websiteCopySchema = new Schema({
+  // listingID: { type: String, required: true },
+  webSiteName: { type: String, required: true, lowercase: true },
+  webSiteURL: { type: String, required: true },
+});
 const propertiesSchema = new Schema(
   {
     title: {
       type: String,
       require: true,
+      lowercase: true,
     },
     pageTitle: {
       type: String,
-      unique: true,
       require: true,
+      lowercase: true,
     },
+    slug: { type: String, slug: ["title", "pageTitle"], unique: true },
+
     description: {
       type: String,
       require: true,
@@ -57,7 +67,7 @@ const propertiesSchema = new Schema(
     },
     listingType: {
       type: String,
-      // enum: [ListingType.forSale, ListingType.forRent],
+      enum: [ListingType.forSale, ListingType.forRent],
       lowercase: true,
       require: true,
     },
@@ -104,6 +114,8 @@ const propertiesSchema = new Schema(
     },
     lotAreaSymbol: {
       type: String,
+      lowercase: true,
+      require: true,
     },
     images: {
       type: [String],
@@ -113,6 +125,7 @@ const propertiesSchema = new Schema(
       require: true,
     },
     address: addressSchema,
+    websiteCopy: websiteCopySchema,
     country: {
       type: Schema.Types.ObjectId,
       ref: "Countries",

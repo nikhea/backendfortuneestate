@@ -54,6 +54,10 @@ export const createProperties = async (req, res, next) => {
           street: req.body.street,
           city: req.body.city,
         },
+        websiteCopy: {
+          webSiteURL: req.body.webSiteURL,
+          webSiteName: req.body.webSiteName,
+        },
         country: country._id,
       });
       const property = await Property.save();
@@ -84,6 +88,34 @@ export const getOneProperty = async (req, res, next) => {
     //   const p = new RegExp("^" + req.params.name + "$", "i");
     //   let country = await Countries.findOne({ name: p }).populate("continent");
     let property = await Properties.findById(id).populate("country");
+    // if (property) {
+    let response = {
+      success: "true",
+      statuscode: 200,
+      data: property,
+      message: "success",
+    };
+    res.json(response);
+    // }
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed",
+    };
+    return res.json(response);
+  }
+};
+export const getPropertyofCountry = async (req, res, next) => {
+  const name = req.params.name;
+  try {
+    const p = new RegExp("^" + req.params.name + "$", "i");
+    // let country = await Countries.findOne({ name: p }).populate("properties");
+    let property = await Properties.find()
+      .where("address.country")
+      .equals(p)
+      .populate("country");
     // if (property) {
     let response = {
       success: "true",

@@ -7,6 +7,7 @@ const countrySchema = new Schema(
       type: String,
       unique: true,
       require: true,
+      lowercase: true,
     },
     description: {
       type: String,
