@@ -1,40 +1,57 @@
 import * as mongoose from "mongoose";
+const jwt = require("jsonwebtoken");
+const validator = require("validator");
 import { roles } from "../utils/constants.js";
+// import ProfileScheme from "./profile.model";
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
-  firstname: {
-    type: String,
-    required: true,
-    lowercase: true,
+const UserSchema = new Schema(
+  {
+    email: {
+      type: String,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      required: false,
+      max: 100,
+      validate: (value) => {
+        if (!validator.isEmail(value)) {
+          throw new Error({ error: "Invalid Email address" });
+        }
+      },
+    },
+    firstname: {
+      type: String,
+      required: true,
+      lowercase: true,
+    },
+    lastname: {
+      type: String,
+      required: true,
+      lowercase: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      lowercase: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: [roles.admin, roles.agent, roles.subscriber],
+      default: roles.subscriber,
+    },
+    profile: {
+      type: Schema.Types.ObjectId,
+      ref: "Profile",
+    },
   },
-  lastname: {
-    type: String,
-    required: true,
-    lowercase: true,
-  },
-  username: {
-    type: String,
-    required: true,
-    lowercase: true,
-    unique: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    lowercase: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: [roles.admin, roles.moderator, roles.client],
-    default: roles.client,
-  },
-});
+  { timestamps: true }
+);
 const users = mongoose.model("Users", UserSchema);
 
 export default users;
