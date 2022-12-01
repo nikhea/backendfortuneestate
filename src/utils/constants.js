@@ -1,7 +1,7 @@
 export const roles = {
   admin: "ADMIN",
-  moderator: "MODERATOR",
-  client: "CLIENT",
+  agent: "AGENT",
+  subscriber: "SUBSCRIBER",
 };
 export const category = {
   residential: "residential",
