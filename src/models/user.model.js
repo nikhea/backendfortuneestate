@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
-const jwt = require("jsonwebtoken");
-const validator = require("validator");
+import jwt from "jsonwebtoken";
+import validator from "validator";
 import { roles } from "../utils/constants.js";
 // import ProfileScheme from "./profile.model";
 const Schema = mongoose.Schema;
@@ -49,6 +49,12 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Profile",
     },
+    properties: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Properties",
+      },
+    ],
   },
   { timestamps: true }
 );
