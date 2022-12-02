@@ -6,6 +6,8 @@ import {
   UpdateOneContinent,
   removeOneContinent,
 } from "../controllers/continent.controllers.js";
+import { loginRequired } from "../middlewares/authtication.js";
+import { ensureAdmin } from "../middlewares/roleValidation.js";
 const router = express.Router();
 // @route     GET api/continent
 // @desc      Get  all continents
@@ -17,7 +19,7 @@ router.get("/", getContinents);
 // @desc      create a new continent
 //@access     Private
 //role        admin
-router.post("/", createContinent);
+router.post("/", loginRequired, ensureAdmin, createContinent);
 
 // @route     GET api/continent
 // @desc      GET one continent
@@ -29,12 +31,12 @@ router.get("/:name", getOneContinent);
 // @desc      create a new continent
 //@access     private
 //role        admin
-router.put("/:id", UpdateOneContinent);
+router.put("/:id", loginRequired, ensureAdmin, UpdateOneContinent);
 
 // @route     GET api/continent
 // @desc      GET one continent
 //@access     private
 //role        admin
-router.delete("/:id", removeOneContinent);
+router.delete("/:id", loginRequired, ensureAdmin, removeOneContinent);
 
 export default router;

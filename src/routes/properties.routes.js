@@ -7,6 +7,11 @@ import {
   UpdateOneProperty,
   removeOneProperty,
 } from "../controllers/properties.controllers.js";
+import { loginRequired } from "../middlewares/authtication.js";
+import {
+  ensureAgent,
+  ensureBothAdminAndAgent,
+} from "../middlewares/roleValidation.js";
 const router = express.Router();
 // @route     GET api/properties
 // @desc      Get  all properties
@@ -17,13 +22,18 @@ router.get("/properties", getProperties);
 // @desc      create a new continent
 //@access     Private
 //role        admin || agent
-router.post("/:name/properties", createProperties);
+router.post("/:name/properties", loginRequired, ensureAgent, createProperties);
 
 // @route     POST api/continent
 // @desc      create a new continent
 //@access     private
 //role        admin
-router.put("/properties/:id", UpdateOneProperty);
+router.put(
+  "/properties/:id",
+  loginRequired,
+  ensureBothAdminAndAgent,
+  UpdateOneProperty
+);
 
 // @route     GET api/properties
 // @desc      Get  all properties
@@ -41,5 +51,10 @@ router.get("/:name/properties", getPropertyofCountry);
 // @desc      delete one properties
 //@access     private
 //role        admin || agent
-router.delete("/properties/:id", removeOneProperty);
+router.delete(
+  "/properties/:id",
+  loginRequired,
+  ensureBothAdminAndAgent,
+  removeOneProperty
+);
 export default router;

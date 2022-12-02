@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv"; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config();
 import * as mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import validator from "validator";
@@ -66,6 +68,7 @@ UserSchema.pre("save", async function (next) {
     }
     let hashedPassword = await bcrypt.hash(this.password, 10);
     this.password = hashedPassword;
+    if (this.email === process.env.ADMIN_EMAIL.toLowerCase()) this.role = roles.admin;
     return next();
   } catch (err) {
     return next(err);

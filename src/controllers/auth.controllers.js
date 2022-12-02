@@ -5,7 +5,7 @@ export const createUser = async (req, res) => {
   const { email, password, firstname, lastname, username, role } = req.body;
 
   try {
-    if (!email || !password || !firstname || !lastname || !username || !role) {
+    if (!email || !password || !firstname || !lastname || !username) {
       let response = {
         statuscode: 400,
         message: "please enter all fields",
