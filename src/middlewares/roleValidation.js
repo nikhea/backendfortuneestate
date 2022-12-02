@@ -8,7 +8,8 @@ export const ensureAdmin = async (req, res, next) => {
   } else {
     let response = {
       statuscode: 400,
-      message: "you are not authorized to perform this action",
+      message:
+        "you are not authorized to perform this action, Only an Admin can perform this action",
     };
     return res.status(response.statuscode).json(response);
   }
@@ -19,18 +20,20 @@ export const ensureAgent = async (req, res, next) => {
   } else {
     let response = {
       statuscode: 400,
-      message: "you are not authorized to perform this action",
+      message:
+        "you are not authorized to perform this action, Only an Agent can perform this action",
     };
     return res.status(response.statuscode).json(response);
   }
 };
 export const ensureBothAdminAndAgent = async (req, res, next) => {
-  if (req.user.role === roles.agent && req.user.role === roles.admin) {
+  if (req.user.role === roles.agent || req.user.role === roles.admin) {
     next();
   } else {
     let response = {
       statuscode: 400,
-      message: "you are not authorized to perform this action",
+      message:
+        "you are not authorized to perform this action, Only both Admin and Agent can perform this action",
     };
     return res.status(response.statuscode).json(response);
   }
