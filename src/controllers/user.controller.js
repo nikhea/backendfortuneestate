@@ -2,7 +2,10 @@ import Properties from "../models/properties.model.js";
 import Users from "../models/user.model.js";
 export const getUsers = async (req, res, next) => {
   try {
-    let users = await Users.find().populate("profile").populate("properties");
+    let users = await Users.find()
+      .select("email firstname lastname username role")
+      .populate("profile")
+      .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -10,32 +13,6 @@ export const getUsers = async (req, res, next) => {
       message: "success",
     };
     res.json(response);
-  } catch (error) {
-    let response = {
-      statuscode: 400,
-      data: [],
-      error: [error],
-      message: "something failed",
-    };
-    return res.json(response);
-  }
-};
-
-export const createUser = async (req, res) => {
-  try {
-  } catch (error) {
-    let response = {
-      statuscode: 400,
-      data: [],
-      error: [error],
-      message: "something failed",
-    };
-    return res.json(response);
-  }
-};
-
-export const loginUser = async (req, res) => {
-  try {
   } catch (error) {
     let response = {
       statuscode: 400,

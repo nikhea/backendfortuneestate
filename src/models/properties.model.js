@@ -130,7 +130,7 @@ const propertiesSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Countries",
     },
-    agent: {
+    user: {
       type: Schema.Types.ObjectId,
       ref: "Users",
     },
