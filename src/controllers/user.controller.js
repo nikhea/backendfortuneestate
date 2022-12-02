@@ -23,6 +23,29 @@ export const getUsers = async (req, res, next) => {
     return res.json(response);
   }
 };
+export const getMe = async (req, res, next) => {
+  try {
+    let user = await Users.findById(req.user.id)
+      .select("email firstname lastname username role")
+      .populate("profile")
+      .populate("properties");
+    let response = {
+      success: "true",
+      statuscode: 200,
+      data: user,
+      message: "success",
+    };
+    res.json(response);
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed",
+    };
+    return res.json(response);
+  }
+};
 
 export const UpdateOneUser = async (req, res, next) => {
   const id = req.params.id;
