@@ -13,7 +13,7 @@ const router = express.Router();
 // @desc      Get  all continents
 //@access     private
 //role        admin
-router.get("/countries", getCountries);
+router.get("/countries",  getCountries);
 
 // @route     POST api/continent
 // @desc      create a new continent

@@ -6,13 +6,13 @@ import {
   removeOneUser,
 } from "../controllers/user.controller.js";
 import { loginRequired } from "../middlewares/authtication.js";
-import { ensureAdmin,} from "../middlewares/roleValidation.js";
+import { ensureAdmin } from "../middlewares/roleValidation.js";
 const router = express.Router();
 // @route     GET api/user
 // @desc      Get  all users
 //@access     private
 //role        admin
-router.get("/", loginRequired, getUsers);
+router.get("/", loginRequired, ensureAdmin, getUsers);
 
 // @route     GET api/user
 // @desc      Get   user thats currencly login

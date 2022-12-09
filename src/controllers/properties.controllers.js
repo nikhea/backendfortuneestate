@@ -26,7 +26,10 @@ export const createProperties = async (req, res, next) => {
   const p = new RegExp("^" + CountryName + "$", "i");
   console.log(p);
   try {
-    const country = await Countries.findOne({ name: p });
+    if (!req.body.country)
+      res.status(404).json({ message: "Invalid country name" });
+
+    const country = await Countries.findOne({ name: req.body.country });
     console.log(country);
     if (country) {
       const Property = new Properties({
@@ -50,7 +53,7 @@ export const createProperties = async (req, res, next) => {
         images: req.body.images,
         image: req.body.image,
         address: {
-          country: CountryName,
+          country: country.name,
           street: req.body.street,
           city: req.body.city,
         },
@@ -71,6 +74,13 @@ export const createProperties = async (req, res, next) => {
         message: "success",
       };
       res.json(response);
+    } else {
+      let response = {
+        // success: "",
+        statuscode: 400,
+        message: "country does not exist",
+      };
+      res.status(response.statuscode).json(response);
     }
   } catch (error) {
     let response = {

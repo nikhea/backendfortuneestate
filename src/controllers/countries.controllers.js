@@ -25,10 +25,35 @@ export const getCountries = async (req, res, next) => {
 export const createCountry = async (req, res, next) => {
   const ContinentsName = req.params.name;
   const p = new RegExp("^" + ContinentsName + "$", "i");
-  console.log(p);
+
+  const CountryName = new RegExp("^" + req.body.name + "$", "i");
   try {
+    if (
+      !req.body.name ||
+      !req.body.description ||
+      !req.body.bgImage ||
+      !req.body.image ||
+      !ContinentsName
+    ) {
+      let response = {
+        statuscode: 400,
+        data: [],
+        error: [error],
+        message: "please enter all fields",
+      };
+      return res.json(response);
+    }
+    const exsitCountries = await Continents.findOne({ name: CountryName });
+    if (exsitCountries) {
+      let response = {
+        statuscode: 400,
+        data: [],
+        error: [error],
+        message: "country already exists",
+      };
+      return res.json(response);
+    }
     const continent = await Continents.findOne({ name: p });
-    console.log(continent);
     if (continent) {
       const Countrys = new Countries({
         name: req.body.name,

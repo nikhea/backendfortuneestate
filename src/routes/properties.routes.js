@@ -22,7 +22,11 @@ router.get("/properties", getProperties);
 // @desc      create a new continent
 //@access     Private
 //role        admin || agent
-router.post("/:name/properties", loginRequired, ensureAgent, createProperties);
+router.post(
+  "/properties",
+  // loginRequired, ensureAgent,
+  createProperties
+);
 
 // @route     POST api/continent
 // @desc      create a new continent
@@ -47,6 +51,7 @@ router.get("/properties/:id", getOneProperty);
 //role        admin
 
 router.get("/:name/properties", getPropertyofCountry);
+
 // @route     DELETE api/properties/:id
 // @desc      delete one properties
 //@access     private
