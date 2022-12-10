@@ -2,6 +2,7 @@ import express from "express";
 import {
   getProperties,
   createProperties,
+  OwnOneProperty,
   getOneProperty,
   getPropertyofCountry,
   UpdateOneProperty,
@@ -16,17 +17,19 @@ const router = express.Router();
 // @route     GET api/properties
 // @desc      Get  all properties
 //@access     all
-//role        admin
 router.get("/properties", getProperties);
+// @route     GET api/properties
+// @desc      Get  all properties
+//@access     all
+router.get("/properties/me", loginRequired, ensureAgent, OwnOneProperty);
+
 // @route     POST api/continent
 // @desc      create a new continent
 //@access     Private
-//role        admin || agent
-router.post(
-  "/properties",
-  // loginRequired, ensureAgent,
-  createProperties
-);
+router.post("/properties",
+
+//  loginRequired, ensureAgent,
+  createProperties);
 
 // @route     POST api/continent
 // @desc      create a new continent

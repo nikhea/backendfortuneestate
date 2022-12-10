@@ -10,6 +10,7 @@ import Countries from "./routes/countries.routes.js";
 import Properties from "./routes/properties.routes.js";
 import Users from "./routes/user.routes.js";
 import Auth from "./routes/auth.routes.js";
+import morgan from "morgan"
 const app = express();
 app.get("/", (req, res) => {
   res.json({ status: "2000" });
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 
 app.use(cors());
 app.options("*", cors());
+app.use(morgan('tiny'))
 
 app.use("/api/auth", Auth);
 app.use("/api/user", Users);

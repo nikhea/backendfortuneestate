@@ -20,7 +20,7 @@ export const ListingType = {
 };
 export const View = {
   garden: "garden",
-  street: " street",
+  street: "street",
   sea: "sea",
 };
 export const measurement = {

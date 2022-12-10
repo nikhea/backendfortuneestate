@@ -51,12 +51,12 @@ const UserSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Profile",
     },
-    properties: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Properties",
-      },
-    ],
+    // properties: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Properties",
+    //   },
+    // ],
   },
   { timestamps: true }
 );

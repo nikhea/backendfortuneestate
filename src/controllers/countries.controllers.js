@@ -3,7 +3,6 @@ import Continents from "../models/continent.model.js";
 export const getCountries = async (req, res, next) => {
   try {
     let countries = await Countries.find().populate("continent");
-    console.log(countries);
     let response = {
       success: "true",
       statuscode: 200,

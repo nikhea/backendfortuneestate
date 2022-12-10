@@ -5,7 +5,7 @@ export const getUsers = async (req, res, next) => {
     let users = await Users.find()
       .select("email firstname lastname username role")
       .populate("profile")
-      .populate("properties");
+      // .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -28,7 +28,7 @@ export const getMe = async (req, res, next) => {
     let user = await Users.findById(req.user.id)
       .select("email firstname lastname username role")
       .populate("profile")
-      .populate("properties");
+      // .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -53,7 +53,7 @@ export const getUsersById = async (req, res, next) => {
     let users = await Users.findById(id)
       .select("email firstname lastname username role")
       .populate("profile")
-      .populate("properties");
+      // .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -120,7 +120,7 @@ export const removeOneUser = async (req, res, next) => {
   } catch (error) {
     let response = {
       statuscode: 400,
-      data: [],
+      // data: [],
       error: [error],
       message: "something failed",
     };
