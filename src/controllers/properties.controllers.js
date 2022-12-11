@@ -2,9 +2,7 @@ import Properties from "../models/properties.model.js";
 import Countries from "../models/country.model.js";
 export const getProperties = async (req, res, next) => {
   try {
-    let properties = await Properties.find()
-      .populate("country")
-      .populate("user", "-password");
+    const properties = res.paginatedResults;
     let response = {
       success: "true",
       statuscode: 200,

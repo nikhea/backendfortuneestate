@@ -9,15 +9,19 @@ import {
   removeOneProperty,
 } from "../controllers/properties.controllers.js";
 import { loginRequired } from "../middlewares/authtication.js";
+import { filitersModels } from "../middlewares/filitersModels.js";
+
 import {
   ensureAgent,
   ensureBothAdminAndAgent,
 } from "../middlewares/roleValidation.js";
+import Properties from "../models/properties.model.js";
+
 const router = express.Router();
 // @route     GET api/properties
 // @desc      Get  all properties
 //@access     all
-router.get("/properties", getProperties);
+router.get("/properties", filitersModels(Properties), getProperties);
 // @route     GET api/properties
 // @desc      Get  all properties
 //@access     all
@@ -26,10 +30,12 @@ router.get("/properties/me", loginRequired, ensureAgent, OwnOneProperty);
 // @route     POST api/continent
 // @desc      create a new continent
 //@access     Private
-router.post("/properties",
+router.post(
+  "/properties",
 
-//  loginRequired, ensureAgent,
-  createProperties);
+  //  loginRequired, ensureAgent,
+  createProperties
+);
 
 // @route     POST api/continent
 // @desc      create a new continent
