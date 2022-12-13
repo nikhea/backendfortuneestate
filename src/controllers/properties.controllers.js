@@ -29,7 +29,6 @@ export const createProperties = async (req, res, next) => {
       res.status(404).json({ message: "Invalid country name" });
 
     const country = await Countries.findOne({ name: req.body.country });
-    // console.log(country);
     if (country) {
       const Property = new Properties({
         title: req.body.title,
@@ -61,7 +60,7 @@ export const createProperties = async (req, res, next) => {
           webSiteName: req.body.webSiteName,
         },
         country: country._id,
-        // user: req.user.id,
+        user: req.user.id,
       });
       const property = await Property.save();
       //   continent.countries.push(countrys);
@@ -195,7 +194,7 @@ export const UpdateOneProperty = async (req, res, next) => {
       success: "true",
       statuscode: 200,
       data: updatedProperty,
-      message: "success",
+      message: "property Updated successfully",
     };
     res.json(response);
   } catch (error) {
@@ -217,7 +216,7 @@ export const removeOneProperty = async (req, res, next) => {
       success: "true",
       statuscode: 200,
       // data: property,
-      message: "success",
+      message: "property delected successfully",
     };
     res.json(response);
   } catch (error) {

@@ -24,7 +24,12 @@ router.get("/me", loginRequired, getMe);
 // @desc      Get   user ByID
 //@access     all
 //role        admin
-router.get("/:id", loginRequired, ensureAdmin, getUsersById);
+router.get(
+  "/:id",
+  loginRequired,
+  // ensureAdmin,
+  getUsersById
+);
 
 // @route     DELETE api/user/:id
 // @desc      delete one properties

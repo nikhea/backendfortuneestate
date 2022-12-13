@@ -1,13 +1,17 @@
+// http://localhost:4000/api/properties?page=1&limit=12&search=kkdjkadd&sort=-1
 export const filitersModels = (model) => {
   return async (req, res, next) => {
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
-
+    const search = req.query.search || model;
+    const propertyType = req.query.propertyType || model;
+    let sortby = parseInt(req.query.sort) || 1;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
     const results = {};
-    results.total = await model.count();
+
+    results.totalCount = await model.count();
     console.log(results.total);
     if (endIndex < (await model.countDocuments().exec())) {
       results.next = {
@@ -23,18 +27,22 @@ export const filitersModels = (model) => {
       };
     }
     try {
+      // title: SearchResult,
+      const SearchResult = new RegExp("^" + search + "$", "i");
       results.results = await model
-        .find()
-
+        .find({ title: SearchResult })
         .populate("country")
         .populate("user", "-password")
+        // .where("propertyType")
+        // .equals(propertyType)
         .limit(limit)
+        .sort({ createdAt: sortby })
         .skip(startIndex)
         .exec();
+      results.resultCount = results.results.length;
       res.paginatedResults = results;
-   
       next();
-    } catch (e) {
+    } catch (error) {
       let response = {
         statuscode: 400,
         error: [error],
@@ -44,24 +52,3 @@ export const filitersModels = (model) => {
     }
   };
 };
-
-// try {
-//   let properties = await Properties.find()
-//     .populate("country")
-//     .populate("user", "-password");
-//   let response = {
-//     success: "true",
-//     statuscode: 200,
-//     data: properties,
-//     message: "success",
-//   };
-//   res.json(response);
-// } catch (error) {
-//   let response = {
-//     statuscode: 400,
-//     data: [],
-//     error: [error],
-//     message: "something failed",
-//   };
-//   return res.json(response);
-// }

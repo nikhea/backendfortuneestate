@@ -32,8 +32,8 @@ router.get("/properties/me", loginRequired, ensureAgent, OwnOneProperty);
 //@access     Private
 router.post(
   "/properties",
-
-  //  loginRequired, ensureAgent,
+  loginRequired,
+  ensureAgent,
   createProperties
 );
 

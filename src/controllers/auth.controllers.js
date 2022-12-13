@@ -72,8 +72,14 @@ export const createUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
+  const { email, password } = req.body; 
+  // if (!email || !password) {
+  //   let response = {
+  //     statuscode: 400,
+  //     message: "invalid credentials",
+  //   };
+  //   return res.json(response);
+  // }
   try {
     const user = await User.findOne({ email });
     let isMatch = await user.comparePassword(password);
@@ -106,6 +112,7 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     let response = {
       statuscode: 400,
+      error: error,
       message: "something failed",
     };
     return res.status(response.statuscode).json(response);
