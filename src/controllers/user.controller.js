@@ -119,6 +119,7 @@ export const UpdateOneUser = async (req, res, next) => {
       id,
       {
         $set: {
+          role: role,
           profile: {
             uploadCount: uploadCount,
             role: role,
