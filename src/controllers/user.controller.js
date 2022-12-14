@@ -3,9 +3,9 @@ import Users from "../models/user.model.js";
 export const getUsers = async (req, res, next) => {
   try {
     let users = await Users.find()
-      .select("email firstname lastname username role")
-      .populate("profile")
-      // .populate("properties");
+      // .select("email firstname lastname username role profile")
+      .select("-password -properties -__v")
+      .populate("profile");
     let response = {
       success: "true",
       statuscode: 200,
@@ -26,9 +26,9 @@ export const getUsers = async (req, res, next) => {
 export const getMe = async (req, res, next) => {
   try {
     let user = await Users.findById(req.user.id)
-      .select("email firstname lastname username role")
-      .populate("profile")
-      // .populate("properties");
+      .select("-password -properties")
+      .populate("profile");
+    // .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -52,8 +52,8 @@ export const getUsersById = async (req, res, next) => {
   try {
     let users = await Users.findById(id)
       .select("email firstname lastname username role")
-      .populate("profile")
-      // .populate("properties");
+      .populate("profile");
+    // .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -73,7 +73,29 @@ export const getUsersById = async (req, res, next) => {
 };
 
 export const UpdateOneUser = async (req, res, next) => {
-  const id = req.params.id;
+  const id = req.user.id;
+  const {
+    // email,
+    // password,
+    // firstname,
+    // lastname,
+    // username,
+    role,
+    gender,
+    state,
+    lag,
+    country,
+    address,
+    phone,
+    profileImage,
+    bannerImage,
+    isVerified,
+    uploadCount,
+    facebook,
+    twitter,
+    linkedin,
+  } = req.body;
+
   try {
     const user = await Users.findById(id);
     if (!user) {
@@ -85,9 +107,40 @@ export const UpdateOneUser = async (req, res, next) => {
       };
       return res.json(response);
     }
-    const updatedUser = await Users.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
+    // const userNameValidator = await Users.findOne({ username });
+    // if (userNameValidator) {
+    //   let response = {
+    //     statuscode: 400,
+    //     message: "User with this username already exists",
+    //   };
+    //   return res.json(response);
+    // }
+    const updatedUser = await Users.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          profile: {
+            uploadCount: uploadCount,
+            role: role,
+            gender: gender,
+            state: state,
+            lag: lag,
+            country: country,
+            address: address,
+            phone: phone,
+            profileImage: profileImage,
+            bannerImage: bannerImage,
+            isVerified: isVerified,
+            facebook: facebook,
+            twitter: twitter,
+            linkedin: linkedin,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    ).select("-password -properties");
     let response = {
       success: "true",
       statuscode: 200,

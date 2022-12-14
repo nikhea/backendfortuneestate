@@ -2,7 +2,27 @@ import Properties from "../models/properties.model.js";
 import User from "../models/user.model.js";
 import { generateJWT } from "./generateJWT.js";
 export const createUser = async (req, res) => {
-  const { email, password, firstname, lastname, username, role } = req.body;
+  const {
+    email,
+    password,
+    firstname,
+    lastname,
+    username,
+    role,
+    gender,
+    state,
+    lag,
+    country,
+    address,
+    phone,
+    profileImage,
+    bannerImage,
+    isVerified,
+    uploadCount,
+    facebook,
+    twitter,
+    linkedin,
+  } = req.body;
 
   try {
     if (!email || !password || !firstname || !lastname || !username) {
@@ -35,7 +55,23 @@ export const createUser = async (req, res) => {
       lastname,
       username,
       role,
+      profile: {
+        gender,
+        state,
+        lag,
+        country,
+        address,
+        phone,
+        profileImage,
+        bannerImage,
+        isVerified,
+        uploadCount,
+        facebook,
+        twitter,
+        linkedin,
+      },
     });
+    console.log(user);
     if (user) {
       const userDate = {
         _id: user._id,
@@ -45,6 +81,7 @@ export const createUser = async (req, res) => {
         lastname: user.lastname,
         username: user.username,
         role: user.role,
+        profile: user.profile,
         token: generateJWT(user._id),
       };
       let response = {
@@ -72,7 +109,7 @@ export const createUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body; 
+  const { email, password } = req.body;
   // if (!email || !password) {
   //   let response = {
   //     statuscode: 400,

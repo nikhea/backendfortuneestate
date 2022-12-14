@@ -3,6 +3,10 @@ export const roles = {
   agent: "AGENT",
   subscriber: "SUBSCRIBER",
 };
+export const gender = {
+  male: "male",
+  female: "female",
+}
 export const category = {
   residential: "residential",
   commercial: "commercial",

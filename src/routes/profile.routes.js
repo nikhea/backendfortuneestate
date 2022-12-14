@@ -1,5 +1,8 @@
 import express from "express";
-import { OwnerProfile } from "../controllers/profile.controller.js";
+import {
+  OwnerProfile,
+  CreateProfile,
+} from "../controllers/profile.controller.js";
 import { loginRequired } from "../middlewares/authtication.js";
 
 const router = express.Router();
@@ -14,6 +17,6 @@ router.get("/me", loginRequired, OwnerProfile);
 // @desc      Add a new user
 //@access     admin
 //role        admin
-// router.post("/login", loginUser);
+router.post("/me", loginRequired, CreateProfile);
 
 export default router;

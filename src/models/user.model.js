@@ -4,7 +4,7 @@ import * as mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import validator from "validator";
 import { roles } from "../utils/constants.js";
-// import ProfileScheme from "./profile.model";
+import ProfileScheme from "./profile.model.js";
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
@@ -47,10 +47,7 @@ const UserSchema = new Schema(
       enum: [roles.admin, roles.agent, roles.subscriber],
       default: roles.subscriber,
     },
-    profile: {
-      type: Schema.Types.ObjectId,
-      ref: "Profile",
-    },
+    profile: ProfileScheme,
     // properties: [
     //   {
     //     type: Schema.Types.ObjectId,
@@ -68,7 +65,8 @@ UserSchema.pre("save", async function (next) {
     }
     let hashedPassword = await bcrypt.hash(this.password, 10);
     this.password = hashedPassword;
-    if (this.email === process.env.ADMIN_EMAIL.toLowerCase()) this.role = roles.admin;
+    if (this.email === process.env.ADMIN_EMAIL.toLowerCase())
+      this.role = roles.admin;
     return next();
   } catch (err) {
     return next(err);
