@@ -1,5 +1,7 @@
 import Properties from "../models/properties.model.js";
 import Countries from "../models/country.model.js";
+import { cloudinaryuploads } from "../cloudinary/cloudinary.js";
+import fs from "fs";
 export const getProperties = async (req, res, next) => {
   try {
     const properties = res.paginatedResults;
@@ -21,15 +23,28 @@ export const getProperties = async (req, res, next) => {
   }
 };
 export const createProperties = async (req, res, next) => {
-  const CountryName = req.params.name;
-  const p = new RegExp("^" + CountryName + "$", "i");
-  console.log(req.body);
+  // const CountryName = req.params.name;
+  // const p = new RegExp("^" + CountryName + "$", "i");
+  // console.log(req.body);
   try {
     if (!req.body.country)
       res.status(404).json({ message: "Invalid country name" });
 
     const country = await Countries.findOne({ name: req.body.country });
     if (country) {
+      const uploader = async (path) =>
+        await cloudinaryuploads(path, "propertyUploadImages");
+      const urls = [];
+      const files = req.files;
+      for (const file of files) {
+        const { path } = file;
+        const newPath = await uploader(path);
+        urls.push(newPath);
+        urls.push(path);
+        fs.unlinkSync(path);
+      }
+      // const newPath = await cloudinaryuploads(path, "propertyUploadImages");
+      console.log(urls);
       const Property = new Properties({
         title: req.body.title,
         pageTitle: req.body.pageTitle,
@@ -48,8 +63,9 @@ export const createProperties = async (req, res, next) => {
         yearBuilt: req.body.yearBuilt,
         lotArea: req.body.lotArea,
         lotAreaSymbol: req.body.lotAreaSymbol,
-        images: req.body.images,
+        propertyImages: urls,
         image: req.body.image,
+        isLiked: req.body.isLiked,
         address: {
           country: country.name,
           street: req.body.street,
@@ -85,7 +101,7 @@ export const createProperties = async (req, res, next) => {
     let response = {
       statuscode: 400,
       error: [error],
-      message: "something failed",
+      message: "something failed ssssssssssss " + error,
     };
     return res.status(response.statuscode).json(response);
   }
@@ -154,7 +170,9 @@ export const getPropertyofCountry = async (req, res, next) => {
     let property = await Properties.find()
       .where("address.country")
       .equals(p)
-      .populate("country");
+      .populate("country")
+      .populate("user", "-password");
+
     if (property) {
       let response = {
         success: "true",
@@ -164,6 +182,50 @@ export const getPropertyofCountry = async (req, res, next) => {
       };
       res.json(response);
     }
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed",
+    };
+    return res.json(response);
+  }
+};
+export const UpdateLikeProperty = async (req, res, next) => {
+  const { isLiked } = req.body;
+  // const user = req.user.id;
+  const id = req.params.id;
+  console.log(id);
+  try {
+    const property = await Properties.findById(id);
+    if (!property) {
+      let response = {
+        statuscode: 400,
+        data: [],
+        error: [error],
+        message: "something failed",
+      };
+      return res.json(response);
+    }
+    const updatedLike = await Properties.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          isLiked: isLiked,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+    let response = {
+      success: "true",
+      statuscode: 200,
+      data: updatedLike,
+      message: "property Updated successfully",
+    };
+    res.json(response);
   } catch (error) {
     let response = {
       statuscode: 400,

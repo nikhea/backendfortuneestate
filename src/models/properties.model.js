@@ -29,6 +29,14 @@ const websiteCopySchema = new Schema({
   webSiteName: { type: String, required: true, lowercase: true },
   webSiteURL: { type: String, required: true },
 });
+const ImageSchema = new Schema({
+  url: {
+    type: String,
+  },
+  public_id: {
+    type: String,
+  },
+});
 const propertiesSchema = new Schema(
   {
     title: {
@@ -117,12 +125,14 @@ const propertiesSchema = new Schema(
       lowercase: true,
       require: true,
     },
-    images: {
-      type: [String],
-    },
+    propertyImages: [],
     image: {
       type: String,
       require: true,
+    },
+    isLiked: {
+      type: Boolean,
+      default: false,
     },
     address: addressSchema,
     websiteCopy: websiteCopySchema,

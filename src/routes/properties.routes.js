@@ -6,6 +6,7 @@ import {
   getOneProperty,
   getPropertyofCountry,
   UpdateOneProperty,
+  UpdateLikeProperty,
   removeOneProperty,
 } from "../controllers/properties.controllers.js";
 import { loginRequired } from "../middlewares/authtication.js";
@@ -16,6 +17,7 @@ import {
   ensureBothAdminAndAgent,
 } from "../middlewares/roleValidation.js";
 import Properties from "../models/properties.model.js";
+import upload from "../imageServices/multer.js";
 
 const router = express.Router();
 // @route     GET api/properties
@@ -34,6 +36,7 @@ router.post(
   "/properties",
   loginRequired,
   ensureAgent,
+  upload.array("propertyImages", 3),
   createProperties
 );
 
@@ -47,6 +50,11 @@ router.put(
   ensureBothAdminAndAgent,
   UpdateOneProperty
 );
+
+// @route     POST api/continent
+// @desc      create a new continent
+//@access     Private
+router.put("/properties/:id/like", loginRequired, UpdateLikeProperty);
 
 // @route     GET api/properties
 // @desc      Get  all properties
