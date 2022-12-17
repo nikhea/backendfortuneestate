@@ -26,20 +26,18 @@ cloudinary.config({
 //   });
 // };
 
-export const cloudinaryuploads = (file, folder) => {
-  return cloudinary.uploader
-    .upload(file, {
+export const cloudinaryUploads = async (file, folder) => {
+  try {
+    const data = await cloudinary.uploader.upload(file, {
       folder,
-    })
-    .then((data) => {
-      return {
-        url: data.url,
-        public_id: data.public_id,
-      };
-    })
-    .catch((error) => {
-      console.log(error, "cloudinary uploads function");
     });
+    return {
+      url: data.url,
+      public_id: data.public_id,
+    };
+  } catch (error) {
+    console.log(error, "cloudinary uploads function");
+  }
 };
 
 export const cloudinaryRemove = async (public_id) => {
@@ -47,3 +45,20 @@ export const cloudinaryRemove = async (public_id) => {
     console.log(result, err);
   });
 };
+
+
+// export const cloudinaryuploads = (file, folder) => {
+//   return cloudinary.uploader
+//     .upload(file, {
+//       folder,
+//     })
+//     .then((data) => {
+//       return {
+//         url: data.url,
+//         public_id: data.public_id,
+//       };
+//     })
+//     .catch((error) => {
+//       console.log(error, "cloudinary uploads function");
+//     });
+// };

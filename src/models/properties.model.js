@@ -126,11 +126,15 @@ const propertiesSchema = new Schema(
       require: true,
     },
     propertyImages: [],
-    image: {
-      type: String,
-      require: true,
-    },
+    // image: {
+    //   type: String,
+    //   require: true,
+    // },
     isLiked: {
+      type: Boolean,
+      default: false,
+    },
+    isPublished: {
       type: Boolean,
       default: false,
     },

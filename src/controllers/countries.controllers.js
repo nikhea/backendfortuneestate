@@ -22,18 +22,14 @@ export const getCountries = async (req, res, next) => {
 };
 
 export const createCountry = async (req, res, next) => {
+  const { name, bgImage, image, description } = req.body;
+
   const ContinentsName = req.params.name;
   const p = new RegExp("^" + ContinentsName + "$", "i");
 
   const CountryName = new RegExp("^" + req.body.name + "$", "i");
   try {
-    if (
-      !req.body.name ||
-      !req.body.description ||
-      !req.body.bgImage ||
-      !req.body.image ||
-      !ContinentsName
-    ) {
+    if (!name || !description || !bgImage || !image || !ContinentsName) {
       let response = {
         statuscode: 400,
         data: [],
@@ -55,10 +51,10 @@ export const createCountry = async (req, res, next) => {
     const continent = await Continents.findOne({ name: p });
     if (continent) {
       const Countrys = new Countries({
-        name: req.body.name,
-        description: req.body.description,
-        bgImage: req.body.bgImage,
-        image: req.body.image,
+        name,
+        description,
+        bgImage,
+        image,
         continent: continent._id,
       });
       const countrys = await Countrys.save();

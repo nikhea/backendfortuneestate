@@ -1,6 +1,6 @@
 import Properties from "../models/properties.model.js";
 import Countries from "../models/country.model.js";
-import { cloudinaryuploads } from "../cloudinary/cloudinary.js";
+import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
 import fs from "fs";
 export const getProperties = async (req, res, next) => {
   try {
@@ -33,7 +33,7 @@ export const createProperties = async (req, res, next) => {
     const country = await Countries.findOne({ name: req.body.country });
     if (country) {
       const uploader = async (path) =>
-        await cloudinaryuploads(path, "propertyUploadImages");
+        await cloudinaryUploads(path, "propertyUploadImages");
       const urls = [];
       const files = req.files;
       for (const file of files) {
@@ -44,7 +44,6 @@ export const createProperties = async (req, res, next) => {
         fs.unlinkSync(path);
       }
       // const newPath = await cloudinaryuploads(path, "propertyUploadImages");
-      console.log(urls);
       const Property = new Properties({
         title: req.body.title,
         pageTitle: req.body.pageTitle,

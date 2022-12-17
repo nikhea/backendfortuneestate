@@ -5,14 +5,34 @@ const Schema = mongoose.Schema;
 
 const ProfileSchema = new Schema(
   {
-    gender: { type: String, lowercase: true, enum: [gender.male, gender.female] },
+    gender: {
+      type: String,
+      lowercase: true,
+      enum: [gender.male, gender.female],
+    },
     state: { type: String, lowercase: true },
     lga: { type: String, lowercase: true },
     country: { type: String, lowercase: true },
     address: { type: String, lowercase: true },
     phone: { type: Number },
-    profileImage: { type: String },
-    bannerImage: { type: String },
+    profileImage: {
+      publicId: {
+        type: String,
+      },
+      imageUrl: {
+        type: String,
+        required: false,
+      },
+    },
+    bannerImage: {
+      publicId: {
+        type: String,
+      },
+      imageUrl: {
+        type: String,
+        required: false,
+      },
+    },
     isVerified: {
       type: Boolean,
       default: false,

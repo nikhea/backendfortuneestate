@@ -1,5 +1,7 @@
 import Properties from "../models/properties.model.js";
 import Users from "../models/user.model.js";
+import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
+import fs from "fs";
 export const getUsers = async (req, res, next) => {
   try {
     let users = await Users.find()

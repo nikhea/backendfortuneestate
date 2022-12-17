@@ -8,6 +8,8 @@ import {
 } from "../controllers/user.controller.js";
 import { loginRequired } from "../middlewares/authtication.js";
 import { ensureAdmin } from "../middlewares/roleValidation.js";
+import upload from "../imageServices/multer.js";
+
 const router = express.Router();
 // @route     GET api/user
 // @desc      Get  all users
@@ -39,7 +41,13 @@ router.get(
 // @desc      delete one properties
 //@access     private
 //role        admin
-router.put("/me", loginRequired, UpdateOneUser);
+router.put(
+  "/me",
+  loginRequired,
+  upload.single("profileImage"),
+  upload.single("bannerImage"),
+  UpdateOneUser
+);
 
 // @route     DELETE api/user/:id
 // @desc      delete one properties

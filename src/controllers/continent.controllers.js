@@ -22,13 +22,15 @@ export const getContinents = async (req, res, next) => {
 };
 
 export const createContinent = async (req, res, next) => {
+  const { name, bgImage, image, description } = req.body;
   try {
     // const p = new RegExp("^" + req.body.name + "$", "i");
     // let continent = await Continents.find({ name: p });
     let continents = new Continents({
-      name: req.body.name,
-      bgImage: req.body.bgImage,
-      image: req.body.image,
+      name,
+      bgImage,
+      image,
+      description,
     });
     await continents.save();
     if (continents) {

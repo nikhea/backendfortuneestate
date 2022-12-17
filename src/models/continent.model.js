@@ -17,6 +17,11 @@ const continentSchema = new Schema(
       type: String,
       require: true,
     },
+
+    description: {
+      type: String,
+      require: true,
+    },
     countries: [
       {
         type: Schema.Types.ObjectId,
