@@ -25,10 +25,10 @@ const ProfileSchema = new Schema(
       },
     },
     bannerImage: {
-      publicId: {
+      public_id: {
         type: String,
       },
-      imageUrl: {
+      url: {
         type: String,
         required: false,
       },

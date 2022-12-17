@@ -1,7 +1,7 @@
 import Properties from "../models/properties.model.js";
 import Countries from "../models/country.model.js";
 import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
-import fs from "fs";
+import { uploadPropertiesImage } from "../middlewares/uploadImage.js";
 export const getProperties = async (req, res, next) => {
   try {
     const properties = res.paginatedResults;
@@ -26,24 +26,14 @@ export const createProperties = async (req, res, next) => {
   // const CountryName = req.params.name;
   // const p = new RegExp("^" + CountryName + "$", "i");
   // console.log(req.body);
+  let PropertiesUrls;
   try {
     if (!req.body.country)
       res.status(404).json({ message: "Invalid country name" });
 
     const country = await Countries.findOne({ name: req.body.country });
     if (country) {
-      const uploader = async (path) =>
-        await cloudinaryUploads(path, "propertyUploadImages");
-      const urls = [];
-      const files = req.files;
-      for (const file of files) {
-        const { path } = file;
-        const newPath = await uploader(path);
-        urls.push(newPath);
-        urls.push(path);
-        fs.unlinkSync(path);
-      }
-      // const newPath = await cloudinaryuploads(path, "propertyUploadImages");
+      PropertiesUrls = await uploadPropertiesImage(req);
       const Property = new Properties({
         title: req.body.title,
         pageTitle: req.body.pageTitle,
@@ -62,8 +52,8 @@ export const createProperties = async (req, res, next) => {
         yearBuilt: req.body.yearBuilt,
         lotArea: req.body.lotArea,
         lotAreaSymbol: req.body.lotAreaSymbol,
-        propertyImages: urls,
-        image: req.body.image,
+        propertyImages: PropertiesUrls,
+        // image: req.body.image,
         isLiked: req.body.isLiked,
         address: {
           country: country.name,

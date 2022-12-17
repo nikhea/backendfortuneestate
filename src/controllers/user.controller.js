@@ -1,6 +1,9 @@
 import Properties from "../models/properties.model.js";
 import Users from "../models/user.model.js";
-import { uploadProfileImage } from "../middlewares/uploadImage.js";
+import {
+  uploadProfileImage,
+  uploadBannerImage,
+} from "../middlewares/uploadImage.js";
 import { cloudinaryRemove } from "../cloudinary/cloudinary.js";
 
 export const getUsers = async (req, res, next) => {
@@ -73,10 +76,8 @@ export const getUsersById = async (req, res, next) => {
 };
 
 export const UpdateOneUser = async (req, res, next) => {
-  let ProfileUrls;
+  let ProfileUrls, BannerUrls;
   const id = req.user.id;
-  // fieldname
-  // const bannerImage = req.files.bannerImage[0];
   const {
     role,
     gender,
@@ -105,6 +106,7 @@ export const UpdateOneUser = async (req, res, next) => {
     }
 
     ProfileUrls = await uploadProfileImage(req);
+    BannerUrls = await uploadBannerImage(req);
 
     const updatedUser = await Users.findByIdAndUpdate(
       id,
@@ -121,7 +123,7 @@ export const UpdateOneUser = async (req, res, next) => {
             address: address,
             phone: phone,
             profileImage: ProfileUrls,
-            // bannerImage: bannerImage,
+            bannerImage: BannerUrls,
             isVerified: isVerified,
             facebook: facebook,
             twitter: twitter,
@@ -156,10 +158,12 @@ export const removeOneUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     let user = await Users.findById(id).select("-password");
-    const { public_id } = user.profile.profileImage;
-    await cloudinaryRemove(public_id);
+    const { public_id: ProfileImageUrl } = user.profile.profileImage;
+    const { public_id: BannerImageUrl } = user.profile.bannerImage;
+    await cloudinaryRemove(ProfileImageUrl);
+    await cloudinaryRemove(BannerImageUrl);
+    
     await user.remove();
-
     let response = {
       success: "true",
       statuscode: 200,
