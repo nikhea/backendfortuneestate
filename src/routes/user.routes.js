@@ -44,8 +44,18 @@ router.get(
 router.put(
   "/me",
   loginRequired,
-  upload.single("profileImage"),
-  upload.single("bannerImage"),
+  // upload.single("profileImage"),
+  // upload.single("bannerImage"),
+  upload.fields([
+    {
+      name: "profileImage",
+      maxCount: 1,
+    },
+    {
+      name: "bannerImage",
+      maxCount: 1,
+    },
+  ]),
   UpdateOneUser
 );
 
@@ -53,5 +63,10 @@ router.put(
 // @desc      delete one properties
 //@access     private
 //role        admin
-router.delete("/:id", loginRequired, ensureAdmin, removeOneUser);
+router.delete(
+  "/:id",
+  loginRequired,
+  // ensureAdmin,
+  removeOneUser
+);
 export default router;

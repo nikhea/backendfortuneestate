@@ -1,11 +1,11 @@
 import Properties from "../models/properties.model.js";
 import Users from "../models/user.model.js";
-import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
-import fs from "fs";
+import { uploadProfileImage } from "../middlewares/uploadImage.js";
+import { cloudinaryRemove } from "../cloudinary/cloudinary.js";
+
 export const getUsers = async (req, res, next) => {
   try {
     let users = await Users.find()
-      // .select("email firstname lastname username role profile")
       .select("-password -properties -__v")
       .populate("profile");
     let response = {
@@ -30,7 +30,6 @@ export const getMe = async (req, res, next) => {
     let user = await Users.findById(req.user.id)
       .select("-password -properties")
       .populate("profile");
-    // .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -55,7 +54,6 @@ export const getUsersById = async (req, res, next) => {
     let users = await Users.findById(id)
       .select("email firstname lastname username role")
       .populate("profile");
-    // .populate("properties");
     let response = {
       success: "true",
       statuscode: 200,
@@ -75,13 +73,11 @@ export const getUsersById = async (req, res, next) => {
 };
 
 export const UpdateOneUser = async (req, res, next) => {
+  let ProfileUrls;
   const id = req.user.id;
+  // fieldname
+  // const bannerImage = req.files.bannerImage[0];
   const {
-    // email,
-    // password,
-    // firstname,
-    // lastname,
-    // username,
     role,
     gender,
     state,
@@ -89,8 +85,6 @@ export const UpdateOneUser = async (req, res, next) => {
     country,
     address,
     phone,
-    profileImage,
-    bannerImage,
     isVerified,
     uploadCount,
     facebook,
@@ -109,14 +103,9 @@ export const UpdateOneUser = async (req, res, next) => {
       };
       return res.json(response);
     }
-    // const userNameValidator = await Users.findOne({ username });
-    // if (userNameValidator) {
-    //   let response = {
-    //     statuscode: 400,
-    //     message: "User with this username already exists",
-    //   };
-    //   return res.json(response);
-    // }
+
+    ProfileUrls = await uploadProfileImage(req);
+
     const updatedUser = await Users.findByIdAndUpdate(
       id,
       {
@@ -131,8 +120,8 @@ export const UpdateOneUser = async (req, res, next) => {
             country: country,
             address: address,
             phone: phone,
-            profileImage: profileImage,
-            bannerImage: bannerImage,
+            profileImage: ProfileUrls,
+            // bannerImage: bannerImage,
             isVerified: isVerified,
             facebook: facebook,
             twitter: twitter,
@@ -144,19 +133,21 @@ export const UpdateOneUser = async (req, res, next) => {
         new: true,
       }
     ).select("-password -properties");
-    let response = {
-      success: "true",
-      statuscode: 200,
-      data: updatedUser,
-      message: "success",
-    };
-    res.json(response);
+    if (updatedUser) {
+      let response = {
+        success: "true",
+        statuscode: 200,
+        data: updatedUser,
+        message: "success",
+      };
+      res.json(response);
+    }
   } catch (error) {
     let response = {
       statuscode: 400,
       data: [],
       error: [error],
-      message: "something failed",
+      message: "something failed" + error,
     };
     return res.json(response);
   }
@@ -165,7 +156,10 @@ export const removeOneUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     let user = await Users.findById(id).select("-password");
+    const { public_id } = user.profile.profileImage;
+    await cloudinaryRemove(public_id);
     await user.remove();
+
     let response = {
       success: "true",
       statuscode: 200,

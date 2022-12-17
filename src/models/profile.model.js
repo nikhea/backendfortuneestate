@@ -16,10 +16,10 @@ const ProfileSchema = new Schema(
     address: { type: String, lowercase: true },
     phone: { type: Number },
     profileImage: {
-      publicId: {
+      public_id: {
         type: String,
       },
-      imageUrl: {
+      url: {
         type: String,
         required: false,
       },
