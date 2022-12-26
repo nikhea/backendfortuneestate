@@ -1,6 +1,3 @@
-import countries from "../models/country.model.js";
-import users from "../models/user.model.js";
-
 // http://localhost:4000/api/properties?page=1&limit=12&search=kkdjkadd&sort=-1
 export const filitersModels = (model) => {
   return async (req, res, next) => {
@@ -14,8 +11,8 @@ export const filitersModels = (model) => {
     let match = {};
     const results = {};
 
-    results.totalCount = await model.count();
-    console.log(results.total);
+    results.totalCount = await model.countDocuments().exec();
+    results.totalPages = Math.ceil(results.totalCount / limit);
     if (req.query.page) {
       if (endIndex < (await model.countDocuments().exec())) {
         results.next = {
@@ -35,6 +32,21 @@ export const filitersModels = (model) => {
       match.$or = [
         {
           propertyType: req.query.propertyType,
+        },
+      ];
+    }
+    if (req.query.category) {
+      match.$or = [
+        {
+          category: req.query.category,
+        },
+      ];
+    }
+
+    if (req.query.view) {
+      match.$or = [
+        {
+          view: req.query.view,
         },
       ];
     }
@@ -100,7 +112,18 @@ export const filitersModels = (model) => {
         },
         {
           $facet: {
-            metadata: [{ $count: "total" }],
+            metadata: [
+              { $count: "total" },
+              {
+                $addFields: {
+                  total_Pages: results.totalPages,
+                  per_page: limit,
+                  page: page,
+                  // next: results.next,
+                  // previous: results.previous,
+                },
+              },
+            ],
             data: [{ $skip: startIndex }, { $limit: limit }],
           },
         },
@@ -108,11 +131,6 @@ export const filitersModels = (model) => {
 
       const Modals = await model.aggregate(pipline).exec();
 
-      // results.results = await countries.populate(Modals, { path: "country" });
-      // results.results = await users.populate(Modals, {
-      //   path: "user",
-      //   select: ["-password"],
-      // });
       results.results = Modals;
       results.resultCount = results.results.length;
       res.paginatedResults = results;
@@ -163,3 +181,9 @@ export const filitersModels = (model) => {
 
 // .aggregate(pipline)
 // results.results
+
+// results.results = await countries.populate(Modals, { path: "country" });
+// results.results = await users.populate(Modals, {
+//   path: "user",
+//   select: ["-password"],
+// });
