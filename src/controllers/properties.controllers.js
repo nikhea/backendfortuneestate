@@ -4,7 +4,9 @@ import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
 import { uploadPropertiesImage } from "../middlewares/uploadImage.js";
 export const getProperties = async (req, res, next) => {
   try {
-    const properties = res.paginatedResults;
+    const properties = res.paginatedResults
+      // .populate("country")
+      // .populate("user", "-password");
     let response = {
       success: "true",
       statuscode: 200,
@@ -23,17 +25,18 @@ export const getProperties = async (req, res, next) => {
   }
 };
 export const createProperties = async (req, res, next) => {
+  let PropertiesUrls;
   // const CountryName = req.params.name;
   // const p = new RegExp("^" + CountryName + "$", "i");
-  // console.log(req.body);
-  let PropertiesUrls;
+  console.log(req.body);
+
   try {
     if (!req.body.country)
       res.status(404).json({ message: "Invalid country name" });
 
     const country = await Countries.findOne({ name: req.body.country });
     if (country) {
-      PropertiesUrls = await uploadPropertiesImage(req);
+      // PropertiesUrls = await uploadPropertiesImage(req);
       const Property = new Properties({
         title: req.body.title,
         pageTitle: req.body.pageTitle,
@@ -52,7 +55,7 @@ export const createProperties = async (req, res, next) => {
         yearBuilt: req.body.yearBuilt,
         lotArea: req.body.lotArea,
         lotAreaSymbol: req.body.lotAreaSymbol,
-        propertyImages: PropertiesUrls,
+        propertyImages: req.body.propertyImages,
         // image: req.body.image,
         isLiked: req.body.isLiked,
         address: {
@@ -68,14 +71,13 @@ export const createProperties = async (req, res, next) => {
         user: req.user.id,
       });
       const property = await Property.save();
-      //   continent.countries.push(countrys);
       country.properties.push(property);
       await country.save();
       let response = {
         success: "true",
         statuscode: 200,
         data: property,
-        message: "success",
+        message: "property created successfully",
       };
       res.json(response);
     } else {
@@ -94,6 +96,7 @@ export const createProperties = async (req, res, next) => {
     };
     return res.status(response.statuscode).json(response);
   }
+  //   continent.countries.push(countrys);
 };
 export const OwnOneProperty = async (req, res, next) => {
   const user = req.user.id;
@@ -101,7 +104,6 @@ export const OwnOneProperty = async (req, res, next) => {
     let property = await Properties.find({ user: user })
       .populate("country")
       .populate("user", "-password");
-    console.log(property, "ownproperties");
     if (property) {
       let response = {
         success: "true",
@@ -129,7 +131,7 @@ export const getOneProperty = async (req, res, next) => {
       let response = {
         success: "true",
         statuscode: 400,
-        data: property,
+        // data: property,
         message: "property does not exist",
       };
       res.json.status(response.statuscode).json(response);
@@ -167,7 +169,7 @@ export const getPropertyofCountry = async (req, res, next) => {
         success: "true",
         statuscode: 200,
         data: property,
-        message: "success",
+        message: "success ",
       };
       res.json(response);
     }
@@ -185,7 +187,6 @@ export const UpdateLikeProperty = async (req, res, next) => {
   const { isLiked } = req.body;
   // const user = req.user.id;
   const id = req.params.id;
-  console.log(id);
   try {
     const property = await Properties.findById(id);
     if (!property) {
@@ -262,14 +263,15 @@ export const removeOneProperty = async (req, res, next) => {
   const id = req.params.id;
   try {
     let property = await Properties.findById(id);
-    await property.remove();
-    let response = {
-      success: "true",
-      statuscode: 200,
-      // data: property,
-      message: "property delected successfully",
-    };
-    res.json(response);
+    const deleteProperty = await property.remove();
+    if (deleteProperty) {
+      let response = {
+        success: "true",
+        statuscode: 200,
+        message: "property deleted successfully",
+      };
+      res.json(response);
+    }
   } catch (error) {
     let response = {
       statuscode: 400,
