@@ -4,9 +4,9 @@ import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
 import { uploadPropertiesImage } from "../middlewares/uploadImage.js";
 export const getProperties = async (req, res, next) => {
   try {
-    const properties = res.paginatedResults
-      // .populate("country")
-      // .populate("user", "-password");
+    const properties = res.paginatedResults;
+    console.log(properties)
+  
     let response = {
       success: "true",
       statuscode: 200,

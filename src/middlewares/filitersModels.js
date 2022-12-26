@@ -5,7 +5,7 @@ import users from "../models/user.model.js";
 export const filitersModels = (model) => {
   return async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 12;
+    const limit = parseInt(req.query.limit) || Number.MAX_SAFE_INTEGER;
     const search = req.query.search || model;
     const SearchResult = new RegExp("^" + search + "$", "i");
     let sortby = parseInt(req.query.sort) || 1;
@@ -78,6 +78,27 @@ export const filitersModels = (model) => {
         { $sort: { createdAt: sortby } },
         // { $skip: startIndex },
         {
+          $lookup: {
+            from: "users",
+            localField: "user",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+
+        {
+          $set: {
+            user: {
+              $arrayElemAt: ["$user", 0],
+            },
+          },
+        },
+        {
+          $project: {
+            "user.password": 0,
+          },
+        },
+        {
           $facet: {
             metadata: [{ $count: "total" }],
             data: [{ $skip: startIndex }, { $limit: limit }],
@@ -86,13 +107,13 @@ export const filitersModels = (model) => {
       ];
 
       const Modals = await model.aggregate(pipline).exec();
-      results.results = Modals;
-      results.results = await countries.populate(Modals, { path: "country" });
-      results.results = await users.populate(Modals, {
-        path: "user",
-        select: ["-password"],
-      });
 
+      // results.results = await countries.populate(Modals, { path: "country" });
+      // results.results = await users.populate(Modals, {
+      //   path: "user",
+      //   select: ["-password"],
+      // });
+      results.results = Modals;
       results.resultCount = results.results.length;
       res.paginatedResults = results;
       next();
