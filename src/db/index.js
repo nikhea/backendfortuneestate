@@ -3,7 +3,8 @@ dotenv.config();
 import * as mongoose from "mongoose";
 
 let dev_db_url = process.env.MONGODB_URI_LOCAL;
-const mongoDB = dev_db_url || process.env.MONGODB_URI;
+// const mongoDB = dev_db_url || process.env.MONGODB_URI;
+const mongoDB = process.env.MONGODB_URI;
 const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

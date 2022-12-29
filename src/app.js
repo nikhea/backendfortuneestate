@@ -10,14 +10,33 @@ import Properties from "./routes/properties.routes.js";
 import Users from "./routes/user.routes.js";
 import Auth from "./routes/auth.routes.js";
 import Profile from "./routes/profile.routes.js";
-// import p from "./imageServices/uploads"
 import morgan from "morgan";
-
 
 // const uploas =
 const app = express();
 app.get("/", (req, res) => {
-  res.json({ status: "2000" });
+  try {
+    res.json({
+      status: "2000",
+      data: {
+        Continents: `${process.env.main_URL}continents`,
+        Continent: `${process.env.main_URL}continents/:continentname`,
+        countries: `${process.env.main_URL}countries`,
+        countrie: `${process.env.main_URL}countries/countriename`,
+        properties: `${process.env.main_URL}properties`,
+        poperty: `${process.env.main_URL}:countriename/properties`,
+        users: `${process.env.main_URL}user`,
+      },
+      Message: "success",
+    });
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      error: error,
+      message: "something failed",
+    };
+    return res.json(response);
+  }
 });
 
 // Init Middleware

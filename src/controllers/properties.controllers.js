@@ -5,8 +5,6 @@ import { uploadPropertiesImage } from "../middlewares/uploadImage.js";
 export const getProperties = async (req, res, next) => {
   try {
     const properties = res.paginatedResults;
-    console.log(properties)
-  
     let response = {
       success: "true",
       statuscode: 200,
@@ -157,18 +155,35 @@ export const getPropertyofCountry = async (req, res, next) => {
   const name = req.params.name;
   try {
     const p = new RegExp("^" + req.params.name + "$", "i");
-    // let country = await Countries.findOne({ name: p }).populate("properties");
-    let property = await Properties.find()
-      .where("address.country")
-      .equals(p)
-      .populate("country")
-      .populate("user", "-password");
+    let country = await Countries.findOne({ name: p });
+    if (country) {
+      let property = await Properties.find()
+        .where("address.country")
+        .equals(country.name)
+        .populate("country")
+        .populate("user", "-password");
 
-    if (property) {
+      if (property.length != 0) {
+        let response = {
+          success: "true",
+          statuscode: 200,
+          data: property,
+          message: "success ",
+        };
+        res.json(response);
+      }
       let response = {
         success: "true",
-        statuscode: 200,
-        data: property,
+        statuscode: 404,
+        data: "no properties in this country yet please register/ login as an agent to add a properties",
+        message: "success ",
+      };
+      res.json(response);
+    } else {
+      let response = {
+        success: "true",
+        statuscode: 404,
+        data: "country does not exist",
         message: "success ",
       };
       res.json(response);
@@ -176,8 +191,7 @@ export const getPropertyofCountry = async (req, res, next) => {
   } catch (error) {
     let response = {
       statuscode: 400,
-      data: [],
-      error: [error],
+      error: error,
       message: "something failed",
     };
     return res.json(response);
