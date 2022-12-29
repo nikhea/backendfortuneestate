@@ -18,3 +18,5 @@ mongoose
     console.error(`Error connecting to the database. \n${err}`);
   });
 export const db = mongoose.connection;
+
+// https://backendfortuneestate.onrender.com
