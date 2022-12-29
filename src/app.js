@@ -38,6 +38,22 @@ app.get("/", (req, res) => {
     return res.json(response);
   }
 });
+app.get("/task", (req, res) => {
+  try {
+    res.json({
+      status: "200",
+      data: "task",
+      Message: "success",
+    });
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      error: error,
+      message: "something failed",
+    };
+    return res.json(response);
+  }
+});
 
 // Init Middleware
 // body parser configuration
