@@ -19,7 +19,11 @@ router.get("/", getContinents);
 // @desc      create a new continent
 //@access     Private
 //role        admin
-router.post("/", loginRequired, ensureAdmin, createContinent);
+router.post(
+  "/",
+  //  loginRequired, ensureAdmin,
+  createContinent
+);
 
 // @route     GET api/continent
 // @desc      GET one continent
