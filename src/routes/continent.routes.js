@@ -21,7 +21,7 @@ router.get("/", getContinents);
 //role        admin
 router.post(
   "/",
-  //  loginRequired, ensureAdmin,
+   loginRequired, ensureAdmin,
   createContinent
 );
 

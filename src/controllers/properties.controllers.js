@@ -175,8 +175,9 @@ export const getPropertyofCountry = async (req, res, next) => {
       let response = {
         success: "true",
         statuscode: 404,
-        data: "no properties in this country yet please register/ login as an agent to add a properties",
-        message: "success ",
+        data: [],
+        message:
+          "no properties in this country yet please register/ login as an agent to add a properties",
       };
       res.json(response);
     } else {
@@ -184,7 +185,7 @@ export const getPropertyofCountry = async (req, res, next) => {
         success: "true",
         statuscode: 404,
         data: "country does not exist",
-        message: "success ",
+        message: "country does not exist",
       };
       res.json(response);
     }
