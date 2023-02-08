@@ -11,7 +11,7 @@ import Users from "./routes/user.routes.js";
 import Auth from "./routes/auth.routes.js";
 import Profile from "./routes/profile.routes.js";
 import morgan from "morgan";
-
+import { main_URL } from "./utils/constants.js";
 // const uploas =
 const app = express();
 app.get("/", (req, res) => {
@@ -19,13 +19,13 @@ app.get("/", (req, res) => {
     res.json({
       status: "2000",
       data: {
-        Continents: `${process.env.main_URL}continents`,
-        Continent: `${process.env.main_URL}continents/:continentname`,
-        countries: `${process.env.main_URL}countries`,
-        countrie: `${process.env.main_URL}countries/countriename`,
-        properties: `${process.env.main_URL}properties`,
-        poperty: `${process.env.main_URL}:countriename/properties`,
-        users: `${process.env.main_URL}user`,
+        Continents: `${main_URL}continents`,
+        Continent: `${main_URL}continents/:continentname`,
+        countries: `${main_URL}countries`,
+        countrie: `${main_URL}countries/countriename`,
+        properties: `${main_URL}properties`,
+        poperty: `${main_URL}:countriename/properties`,
+        users: `${main_URL}user`,
       },
       Message: "success",
     });
