@@ -15,11 +15,7 @@ const router = express.Router();
 // @desc      Get  all users
 //@access     private
 //role        admin
-router.get(
-  "/",
-  // loginRequired, ensureAdmin,
-  getUsers
-);
+router.get("/", loginRequired, ensureAdmin, getUsers);
 
 // @route     GET api/user
 // @desc      Get   user thats currencly login
