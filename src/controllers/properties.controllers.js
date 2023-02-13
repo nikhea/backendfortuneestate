@@ -118,6 +118,8 @@ export const OwnOneProperty = async (req, res, next) => {
       error: [error],
       message: "something failed",
     };
+
+    console.log(response);
     return res.json(response);
   }
 };
@@ -171,15 +173,16 @@ export const getPropertyofCountry = async (req, res, next) => {
           message: "success ",
         };
         res.json(response);
+      } else {
+        let response = {
+          success: "true",
+          statuscode: 404,
+          data: [],
+          message:
+            "no properties in this country yet please register/ login as an agent to add a properties",
+        };
+        res.json(response);
       }
-      let response = {
-        success: "true",
-        statuscode: 404,
-        data: [],
-        message:
-          "no properties in this country yet please register/ login as an agent to add a properties",
-      };
-      res.json(response);
     } else {
       let response = {
         success: "true",
