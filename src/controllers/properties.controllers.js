@@ -123,10 +123,39 @@ export const OwnOneProperty = async (req, res, next) => {
     return res.json(response);
   }
 };
+export const getSingerUserProperties = async (req, res, next) => {
+  const user = req.params.userId;
+  try {
+    let property = await Properties.find({ user: user })
+      .populate("country")
+      .populate("user", "-password");
+    if (property) {
+      let response = {
+        success: "true",
+        statuscode: 200,
+        data: property,
+        message: "success",
+      };
+      res.json(response);
+    }
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed",
+    };
+
+    console.log(response);
+    return res.json(response);
+  }
+};
 export const getOneProperty = async (req, res, next) => {
   const id = req.params.id;
   try {
-    let property = await Properties.findById(id).populate("country");
+    let property = await Properties.findById(id)
+      .populate("country")
+      .populate("user", "-password");
     if (!property) {
       let response = {
         success: "true",

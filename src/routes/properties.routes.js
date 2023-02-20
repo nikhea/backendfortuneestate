@@ -3,6 +3,7 @@ import {
   getProperties,
   createProperties,
   OwnOneProperty,
+  getSingerUserProperties,
   getOneProperty,
   getPropertyofCountry,
   UpdateOneProperty,
@@ -24,6 +25,10 @@ const router = express.Router();
 // @desc      Get  all properties
 //@access     all
 router.get("/properties", filitersModels(Properties), getProperties);
+// @route     GET api/properties
+// @desc      Get  all properties
+//@access     all
+router.get("/properties/user/:userId", getSingerUserProperties);
 // @route     GET api/properties
 // @desc      Get  all properties
 //@access     all
