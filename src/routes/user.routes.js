@@ -3,6 +3,7 @@ import {
   getUsers,
   getUsersById,
   getMe,
+  getAgents,
   UpdateOneUser,
   removeOneUser,
 } from "../controllers/user.controller.js";
@@ -26,6 +27,11 @@ router.get(
 //@access     all
 //role        admin
 router.get("/me", loginRequired, getMe);
+// @route     GET api/user
+// @desc      Get   user thats currencly login
+//@access     all
+//role        admin
+router.get("/agents", getAgents);
 
 // @route     GET api/user
 // @desc      Get   user ByID
@@ -33,7 +39,7 @@ router.get("/me", loginRequired, getMe);
 //role        admin
 router.get(
   "/:id",
-  loginRequired,
+  // loginRequired,
   // ensureAdmin,
   getUsersById
 );
@@ -63,10 +69,5 @@ router.put(
 // @desc      delete one properties
 //@access     private
 //role        admin
-router.delete(
-  "/:id",
-  loginRequired,
-  // ensureAdmin,
-  removeOneUser
-);
+router.delete("/:id", loginRequired, ensureAdmin, removeOneUser);
 export default router;

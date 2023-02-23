@@ -50,6 +50,30 @@ export const getMe = async (req, res, next) => {
     return res.json(response);
   }
 };
+export const getAgents = async (req, res, next) => {
+  try {
+    let user = await Users.find()
+      .where("role")
+      .equals("AGENT")
+      .select("-password -properties")
+      .populate("profile");
+    let response = {
+      success: "true",
+      statuscode: 200,
+      data: user,
+      message: "success",
+    };
+    res.json(response);
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed",
+    };
+    return res.json(response);
+  }
+};
 
 export const getUsersById = async (req, res, next) => {
   const id = req.params.id;
@@ -162,7 +186,7 @@ export const removeOneUser = async (req, res, next) => {
     const { public_id: BannerImageUrl } = user.profile.bannerImage;
     await cloudinaryRemove(ProfileImageUrl);
     await cloudinaryRemove(BannerImageUrl);
-    
+
     await user.remove();
     let response = {
       success: "true",
