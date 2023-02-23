@@ -74,6 +74,32 @@ export const getAgents = async (req, res, next) => {
     return res.json(response);
   }
 };
+export const getAgentsDetails = async (req, res, next) => {
+  const id = req.params.agentId;
+
+  try {
+    let user = await Users.findById(id)
+      .where("role")
+      .equals("AGENT")
+      .select("-password -properties")
+      .populate("profile");
+    let response = {
+      success: "true",
+      statuscode: 200,
+      data: user,
+      message: "success",
+    };
+    res.json(response);
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed",
+    };
+    return res.json(response);
+  }
+};
 
 export const getUsersById = async (req, res, next) => {
   const id = req.params.id;

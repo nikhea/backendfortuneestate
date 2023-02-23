@@ -4,6 +4,7 @@ import {
   getUsersById,
   getMe,
   getAgents,
+  getAgentsDetails,
   UpdateOneUser,
   removeOneUser,
 } from "../controllers/user.controller.js";
@@ -32,6 +33,11 @@ router.get("/me", loginRequired, getMe);
 //@access     all
 //role        admin
 router.get("/agents", getAgents);
+// @route     GET api/user
+// @desc      Get   user thats currencly login
+//@access     all
+//role        admin
+router.get("/agents/:agentId", getAgentsDetails);
 
 // @route     GET api/user
 // @desc      Get   user ByID
