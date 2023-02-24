@@ -3,8 +3,7 @@ export const filitersModels = (model) => {
   return async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || Number.MAX_SAFE_INTEGER;
-    // const search = req.query.search || model;
-    const search = req.query.search;
+    const search = req.query.search || model;
     const SearchResult = new RegExp("^" + search + "$", "i");
     let sortby = parseInt(req.query.sort) || 1;
     const startIndex = (page - 1) * limit;
@@ -85,16 +84,8 @@ export const filitersModels = (model) => {
     // }
 
     try {
-      let pipeline = [
+      let pipline = [
         { $match: match },
-        {
-          $match: {
-            $or: [
-              { title: { $regex: search || "", $options: "i" } },
-              { description: { $regex: search || "", $options: "i" } },
-            ],
-          },
-        },
         // { $limit: limit },
         { $sort: { createdAt: sortby } },
         // { $skip: startIndex },
@@ -138,7 +129,7 @@ export const filitersModels = (model) => {
         },
       ];
 
-      const Modals = await model.aggregate(pipeline).exec();
+      const Modals = await model.aggregate(pipline).exec();
 
       results.results = Modals;
       results.resultCount = results.results.length;
