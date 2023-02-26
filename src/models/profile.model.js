@@ -16,10 +16,23 @@ const ProfileSchema = new Schema(
     address: { type: String, lowercase: true },
     phone: { type: Number },
     profileImage: {
+      asset_id: {
+        type: String,
+        required: false,
+      },
       public_id: {
         type: String,
+        required: false,
       },
       url: {
+        type: String,
+        required: false,
+      },
+      secure_url: {
+        type: String,
+        required: false,
+      },
+      thumbnail_url: {
         type: String,
         required: false,
       },

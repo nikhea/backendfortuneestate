@@ -1,5 +1,6 @@
 import Properties from "../models/properties.model.js";
 import Countries from "../models/country.model.js";
+import { filitersModels } from "../middlewares/filitersModels.js";
 import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
 import { uploadPropertiesImage } from "../middlewares/uploadImage.js";
 export const getProperties = async (req, res, next) => {
@@ -26,7 +27,6 @@ export const createProperties = async (req, res, next) => {
   let PropertiesUrls;
   // const CountryName = req.params.name;
   // const p = new RegExp("^" + CountryName + "$", "i");
-  console.log(req.body);
 
   try {
     if (!req.body.country)

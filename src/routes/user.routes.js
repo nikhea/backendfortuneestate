@@ -58,16 +58,16 @@ router.put(
   loginRequired,
   // upload.single("profileImage"),
   // upload.single("bannerImage"),
-  upload.fields([
-    {
-      name: "profileImage",
-      maxCount: 1,
-    },
-    {
-      name: "bannerImage",
-      maxCount: 1,
-    },
-  ]),
+  // upload.fields([
+  //   {
+  //     name: "profileImage",
+  //     maxCount: 1,
+  //   },
+  //   {
+  //     name: "bannerImage",
+  //     maxCount: 1,
+  //   },
+  // ]),
   UpdateOneUser
 );
 

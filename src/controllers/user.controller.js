@@ -141,6 +141,11 @@ export const UpdateOneUser = async (req, res, next) => {
     facebook,
     twitter,
     linkedin,
+    url,
+    public_id,
+    asset_id,
+    secure_url,
+    thumbnail_url,
   } = req.body;
 
   try {
@@ -155,8 +160,8 @@ export const UpdateOneUser = async (req, res, next) => {
       return res.json(response);
     }
 
-    ProfileUrls = await uploadProfileImage(req);
-    BannerUrls = await uploadBannerImage(req);
+    // ProfileUrls = await uploadProfileImage(req);
+    // BannerUrls = await uploadBannerImage(req);
 
     const updatedUser = await Users.findByIdAndUpdate(
       id,
@@ -172,8 +177,16 @@ export const UpdateOneUser = async (req, res, next) => {
             country: country,
             address: address,
             phone: phone,
-            profileImage: ProfileUrls,
-            bannerImage: BannerUrls,
+            profileImage: {
+              url: url,
+              public_id: public_id,
+              asset_id: asset_id,
+              secure_url: secure_url,
+              thumbnail_url: thumbnail_url,
+            },
+            // bannerImage: BannerUrls,
+            // profileImage: ProfileUrls,
+            // bannerImage: BannerUrls,
             isVerified: isVerified,
             facebook: facebook,
             twitter: twitter,
