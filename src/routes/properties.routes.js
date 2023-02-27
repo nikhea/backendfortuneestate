@@ -41,7 +41,7 @@ router.post(
   "/properties",
   loginRequired,
   ensureAgent,
-  upload.array("propertyImages", 3),
+  // upload.array("propertyImages", 3),
   createProperties
 );
 
