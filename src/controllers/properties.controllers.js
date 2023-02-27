@@ -3,6 +3,9 @@ import Countries from "../models/country.model.js";
 import { filitersModels } from "../middlewares/filitersModels.js";
 import { cloudinaryUploads } from "../cloudinary/cloudinary.js";
 import { uploadPropertiesImage } from "../middlewares/uploadImage.js";
+import { nanoid } from "nanoid";
+
+const idLength = 8;
 export const getProperties = async (req, res, next) => {
   try {
     const properties = res.paginatedResults;
@@ -41,6 +44,7 @@ export const createProperties = async (req, res, next) => {
         description: req.body.description,
         category: req.body.category,
         propertyType: req.body.propertyType,
+        listingID: nanoid(idLength),
         listingType: req.body.listingType,
         view: req.body.view,
         price: req.body.price,

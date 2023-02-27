@@ -1,7 +1,9 @@
 import Properties from "../models/properties.model.js";
 import User from "../models/user.model.js";
 import { generateJWT } from "./generateJWT.js";
+import { nanoid } from "nanoid";
 export const createUser = async (req, res) => {
+  const idLength = 8;
   const {
     email,
     password,
@@ -23,7 +25,7 @@ export const createUser = async (req, res) => {
     twitter,
     linkedin,
   } = req.body;
-
+  const userID = nanoid(idLength);
   try {
     if (!email || !password || !firstname || !lastname || !username) {
       let response = {
@@ -54,6 +56,7 @@ export const createUser = async (req, res) => {
       firstname,
       lastname,
       username,
+      userID,
       role,
       profile: {
         gender,
@@ -76,6 +79,7 @@ export const createUser = async (req, res) => {
       const userDate = {
         _id: user._id,
         email: user.email,
+        userID: user.userID,
         // password: user.password,
         firstname: user.firstname,
         lastname: user.lastname,
@@ -124,6 +128,7 @@ export const loginUser = async (req, res) => {
       const userDate = {
         _id: user._id,
         email: user.email,
+        userID: user.userID,
         // password: user.password,
         firstname: user.firstname,
         lastname: user.lastname,

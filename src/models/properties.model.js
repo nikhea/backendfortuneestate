@@ -50,7 +50,12 @@ const propertiesSchema = new Schema(
       lowercase: true,
     },
     slug: { type: String, slug: ["title", "pageTitle"], unique: true },
-
+    listingID: {
+      type: String,
+      lowercase: true,
+      require: true,
+      unique: true 
+    },
     description: {
       type: String,
       require: true,
