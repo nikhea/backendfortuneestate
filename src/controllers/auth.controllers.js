@@ -74,7 +74,6 @@ export const createUser = async (req, res) => {
         linkedin,
       },
     });
-    console.log(user);
     if (user) {
       const userDate = {
         _id: user._id,
