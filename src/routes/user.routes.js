@@ -6,6 +6,7 @@ import {
   getAgents,
   getAgentsDetails,
   UpdateOneUser,
+  UpdateUserProfile,
   removeOneUser,
 } from "../controllers/user.controller.js";
 import { loginRequired } from "../middlewares/authtication.js";
@@ -71,6 +72,7 @@ router.put(
   UpdateOneUser
 );
 
+router.put("/me/profile", loginRequired, UpdateUserProfile);
 // @route     DELETE api/user/:id
 // @desc      delete one properties
 //@access     private

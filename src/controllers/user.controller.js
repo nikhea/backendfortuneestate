@@ -215,6 +215,83 @@ export const UpdateOneUser = async (req, res, next) => {
     return res.json(response);
   }
 };
+
+export const UpdateUserProfile = async (req, res, next) => {
+  const id = req.user.id;
+  const {
+    role,
+    data: {
+      gender,
+      state,
+      lag,
+      country,
+      address,
+      phone,
+      isVerified,
+      uploadCount,
+      facebook,
+      twitter,
+      linkedin,
+    },
+    // profileImage
+  } = req.body;
+
+  try {
+    const user = await Users.findById(id);
+    if (!user) {
+      let response = {
+        statuscode: 400,
+        data: [],
+        error: [error],
+        message: "something failed",
+      };
+      return res.json(response);
+    }
+
+    const updatedUser = await Users.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          role: role,
+          profile: {
+            uploadCount: uploadCount,
+            role: role,
+            gender: gender,
+            state: state,
+            lag: lag,
+            country: country,
+            address: address,
+            phone: phone,
+            isVerified: isVerified,
+            facebook: facebook,
+            twitter: twitter,
+            linkedin: linkedin,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    ).select("-password -properties");
+    if (updatedUser) {
+      let response = {
+        success: "true",
+        statuscode: 200,
+        data: updatedUser,
+        message: "success",
+      };
+      res.json(response);
+    }
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      data: [],
+      error: [error],
+      message: "something failed" + error,
+    };
+    return res.json(response);
+  }
+};
 export const removeOneUser = async (req, res, next) => {
   const id = req.params.id;
   try {
