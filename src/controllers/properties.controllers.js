@@ -28,6 +28,7 @@ export const getProperties = async (req, res, next) => {
 };
 export const createProperties = async (req, res, next) => {
   let PropertiesUrls;
+  console.log(req.user);
   // const CountryName = req.params.name;
   // const p = new RegExp("^" + CountryName + "$", "i");
 
@@ -102,6 +103,7 @@ export const createProperties = async (req, res, next) => {
 };
 export const OwnOneProperty = async (req, res, next) => {
   const user = req.user.id;
+
   try {
     let property = await Properties.find({ user: user })
       .populate("country")

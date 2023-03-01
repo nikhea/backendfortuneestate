@@ -128,6 +128,7 @@ export const getUsersById = async (req, res, next) => {
 export const UpdateOneUser = async (req, res, next) => {
   let ProfileUrls, BannerUrls;
   const id = req.user.id;
+  console.log(req.body.imageDate);
   const {
     role,
     gender,
@@ -142,10 +143,7 @@ export const UpdateOneUser = async (req, res, next) => {
     twitter,
     linkedin,
     url,
-    public_id,
-    asset_id,
-    secure_url,
-    thumbnail_url,
+    imageDate: { public_id, asset_id, secure_url, thumbnail_url },
   } = req.body;
 
   try {
