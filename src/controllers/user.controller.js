@@ -128,7 +128,7 @@ export const getUsersById = async (req, res, next) => {
 export const UpdateOneUser = async (req, res, next) => {
   let ProfileUrls, BannerUrls;
   const id = req.user.id;
-  console.log(req.body.imageDate);
+  // console.log(req.body.imageDate);
   const {
     role,
     gender,

@@ -28,7 +28,6 @@ export const getProperties = async (req, res, next) => {
 };
 export const createProperties = async (req, res, next) => {
   let PropertiesUrls;
-  console.log(req.user);
   // const CountryName = req.params.name;
   // const p = new RegExp("^" + CountryName + "$", "i");
 
@@ -125,7 +124,6 @@ export const OwnOneProperty = async (req, res, next) => {
       message: "something failed",
     };
 
-    console.log(response);
     return res.json(response);
   }
 };
@@ -152,7 +150,6 @@ export const getSingerUserProperties = async (req, res, next) => {
       message: "something failed",
     };
 
-    console.log(response);
     return res.json(response);
   }
 };
