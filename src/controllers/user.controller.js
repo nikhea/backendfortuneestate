@@ -1,5 +1,6 @@
 import Properties from "../models/properties.model.js";
 import Users from "../models/user.model.js";
+import moment from "moment";
 import {
   uploadProfileImage,
   uploadBannerImage,
@@ -126,25 +127,9 @@ export const getUsersById = async (req, res, next) => {
 };
 
 export const UpdateOneUser = async (req, res, next) => {
-  let ProfileUrls, BannerUrls;
   const id = req.user.id;
-  // console.log(req.body.imageDate);
-  const {
-    role,
-    gender,
-    state,
-    lag,
-    country,
-    address,
-    phone,
-    isVerified,
-    uploadCount,
-    facebook,
-    twitter,
-    linkedin,
-    url,
-    imageDate: { public_id, asset_id, secure_url, thumbnail_url },
-  } = req.body;
+  console.log(req.body.ProfileImage);
+  const { ProfileImage } = req.body;
 
   try {
     const user = await Users.findById(id);
@@ -158,37 +143,34 @@ export const UpdateOneUser = async (req, res, next) => {
       return res.json(response);
     }
 
-    // ProfileUrls = await uploadProfileImage(req);
-    // BannerUrls = await uploadBannerImage(req);
-
     const updatedUser = await Users.findByIdAndUpdate(
       id,
       {
         $set: {
-          role: role,
           profile: {
-            uploadCount: uploadCount,
-            role: role,
-            gender: gender,
-            state: state,
-            lag: lag,
-            country: country,
-            address: address,
-            phone: phone,
+            uploadCount: user?.profile?.uploadCount,
+            gender: user?.profile?.gender,
+            dateOfBirth: user?.profile?.dateOfBirth,
+            age: user?.profile?.age,
+            state: user?.profile?.state,
+            lag: user?.profile?.lag,
+            country: user?.profile?.country,
+            address: user?.profile?.address,
+            city: user?.profile?.phone,
+            phone: user?.profile?.phone,
+            isVerified: user?.profile?.isVerified,
+            instagram: user?.profile?.instagram,
+            facebook: user?.profile?.facebook,
+            tiwtter: user?.profile?.tiwtter,
+            linkedin: user?.profile?.linkedin,
+            bio: user?.profile?.bio,
             profileImage: {
-              url: url,
-              public_id: public_id,
-              asset_id: asset_id,
-              secure_url: secure_url,
-              thumbnail_url: thumbnail_url,
+              url: ProfileImage.url,
+              public_id: ProfileImage.public_id,
+              asset_id: ProfileImage.asset_id,
+              secure_url: ProfileImage.secure_url,
+              thumbnail_url: ProfileImage.thumbnail_url,
             },
-            // bannerImage: BannerUrls,
-            // profileImage: ProfileUrls,
-            // bannerImage: BannerUrls,
-            isVerified: isVerified,
-            facebook: facebook,
-            twitter: twitter,
-            linkedin: linkedin,
           },
         },
       },
@@ -222,6 +204,7 @@ export const UpdateUserProfile = async (req, res, next) => {
     role,
     data: {
       gender,
+      dateOfBirth,
       state,
       lag,
       country,
@@ -229,12 +212,17 @@ export const UpdateUserProfile = async (req, res, next) => {
       phone,
       isVerified,
       uploadCount,
+      city,
+      instagram,
       facebook,
-      twitter,
+      tiwtter,
       linkedin,
+      bio,
+      postcode,
     },
     // profileImage
   } = req.body;
+  console.log(tiwtter, postcode);
 
   try {
     const user = await Users.findById(id);
@@ -257,15 +245,28 @@ export const UpdateUserProfile = async (req, res, next) => {
             uploadCount: uploadCount,
             role: role,
             gender: gender,
+            dateOfBirth: moment.utc(dateOfBirth).format("YYYY-MM-DD"),
+            age: moment().diff(moment(dateOfBirth), "years"),
             state: state,
             lag: lag,
             country: country,
             address: address,
             phone: phone,
+            city: city,
             isVerified: isVerified,
+            instagram: instagram,
             facebook: facebook,
-            twitter: twitter,
+            tiwtter: tiwtter,
             linkedin: linkedin,
+            bio: bio,
+            postcode: postcode,
+            profileImage: {
+              url: user?.profile?.profileImage.url,
+              public_id: user?.profile?.profileImage.public_id,
+              asset_id: user?.profile?.profileImage.asset_id,
+              secure_url: user?.profile?.profileImage.secure_url,
+              thumbnail_url: user?.profile?.profileImage.thumbnail_url,
+            },
           },
         },
       },

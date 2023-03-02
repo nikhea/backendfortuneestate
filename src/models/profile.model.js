@@ -10,11 +10,19 @@ const ProfileSchema = new Schema(
       lowercase: true,
       enum: [gender.male, gender.female],
     },
+    bio: { type: String, lowercase: true },
+    postcode: { type: String, lowercase: true },
     state: { type: String, lowercase: true },
     lga: { type: String, lowercase: true },
     country: { type: String, lowercase: true },
     address: { type: String, lowercase: true },
-    phone: { type: Number },
+    city: { type: String, lowercase: true },
+    dateOfBirth: {
+      type: String,
+      lowercase: true,
+    },
+    age: { type: String, lowercase: true },
+    phone: { type: String, lowercase: true },
     profileImage: {
       asset_id: {
         type: String,
@@ -55,9 +63,11 @@ const ProfileSchema = new Schema(
       default: 0,
     },
     facebook: { type: String },
-    twitter: { type: String },
+    tiwtter: { type: String },
     linkedin: { type: String },
+    instagram: { type: String },
   },
+
   { timestamps: true }
 );
 export default ProfileSchema;

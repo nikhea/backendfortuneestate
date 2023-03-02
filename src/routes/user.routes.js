@@ -54,7 +54,7 @@ router.get(
 // @desc      delete one properties
 //@access     private
 //role        admin
-router.put(
+router.patch(
   "/me",
   loginRequired,
   // upload.single("profileImage"),
@@ -72,7 +72,7 @@ router.put(
   UpdateOneUser
 );
 
-router.put("/me/profile", loginRequired, UpdateUserProfile);
+router.patch("/me/profile", loginRequired, UpdateUserProfile);
 // @route     DELETE api/user/:id
 // @desc      delete one properties
 //@access     private
