@@ -36,6 +36,13 @@ export const filitersModels = (model) => {
         },
       ];
     }
+    if (req.query.listingType) {
+      match.$or = [
+        {
+          listingType: req.query.listingType,
+        },
+      ];
+    }
     if (req.query.category) {
       match.$or = [
         {
@@ -54,6 +61,7 @@ export const filitersModels = (model) => {
 
     if (req.query.price) {
       let price = parseInt(req.query.price);
+
       match.$or = [
         {
           price: { $gte: price },
@@ -62,6 +70,7 @@ export const filitersModels = (model) => {
     }
     if (req.query.bathrooms) {
       let bathrooms = parseInt(req.query.bathrooms);
+      console.log(bathrooms);
       match.$or = [
         {
           bathrooms: { $gte: bathrooms },
