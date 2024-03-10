@@ -6,11 +6,11 @@ export const filitersModels = (model) => {
     // const search = req.query.search || model;
     const search = req.query.search;
     const SearchResult = new RegExp("^" + search + "$", "i");
-    let sortby = parseInt(req.query.sort) || 1;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
+    let sortby = parseInt(req.query.sort) || -1;
+    let startIndex = (page - 1) * limit;
+    let endIndex = page * limit;
     let match = {};
-    const results = {};
+    let results = {};
 
     results.totalCount = await model.countDocuments().exec();
     results.totalPages = Math.ceil(results.totalCount / limit);
@@ -28,6 +28,32 @@ export const filitersModels = (model) => {
         };
       }
     }
+
+    // Adjust startIndex based on the exact query value for price, bathrooms, and bedrooms
+    if (match.price && req.query.price) {
+      startIndex = Math.max(
+        startIndex,
+        await model
+          .countDocuments({ price: { $lt: parseInt(req.query.price) } })
+          .exec()
+      );
+    }
+    if (match.bathrooms && req.query.bathrooms) {
+      startIndex = Math.max(
+        startIndex,
+        await model
+          .countDocuments({ bathrooms: { $lt: parseInt(req.query.bathrooms) } })
+          .exec()
+      );
+    }
+    if (match.bedrooms && req.query.bedrooms) {
+      startIndex = Math.max(
+        startIndex,
+        await model
+          .countDocuments({ bedrooms: { $lt: parseInt(req.query.bedrooms) } })
+          .exec()
+      );
+    }
     const queryParams = [
       "propertyType",
       "listingType",
@@ -42,9 +68,13 @@ export const filitersModels = (model) => {
       if (req.query[param]) {
         switch (param) {
           case "price":
+            match[param] = req.query[param];
+            break;
           case "bathrooms":
           case "bedrooms":
-            match[param] = { $gte: parseInt(req.query[param]) };
+            const value = parseInt(req.query[param]);
+            match[param] = match[param] || {}; // Ensure match[param] exists
+            match[param].$gte = value; // Start from the specified value
             break;
           default:
             match[param] = req.query[param];
@@ -124,6 +154,31 @@ export const filitersModels = (model) => {
     }
   };
 };
+
+// const queryParams = [
+//   "propertyType",
+//   "listingType",
+//   "category",
+//   "view",
+//   "price",
+//   "bathrooms",
+//   "bedrooms",
+// ];
+
+// queryParams.forEach((param) => {
+//   if (req.query[param]) {
+//     switch (param) {
+//       case "price":
+//       case "bathrooms":
+//       case "bedrooms":
+//         match[param] = { $gte: parseInt(req.query[param]) };
+//         break;
+//       default:
+//         match[param] = req.query[param];
+//         break;
+//     }
+//   }
+// });
 
 // if (req.query.propertyType) {
 //   match.$or = [
@@ -229,3 +284,22 @@ export const filitersModels = (model) => {
 //     },
 //   ];
 // }
+// const queryParams = {
+//   propertyType: "propertyType",
+//   listingType: "listingType",
+//   category: "category",
+//   view: "view",
+//   price: (value) => ({ price: { $gte: parseInt(value) } }),
+//   bathrooms: (value) => ({ bathrooms: { $gte: parseInt(value) } }),
+//   bedrooms: (value) => ({ bedrooms: { $gte: parseInt(value) } }),
+// };
+
+// Object.keys(queryParams).forEach((param) => {
+//   if (req.query[param]) {
+//     const filter =
+//       typeof queryParams[param] === "function"
+//         ? queryParams[param](req.query[param])
+//         : { [param]: req.query[param] };
+//     Object.assign(match, filter);
+//   }
+// });
