@@ -8,24 +8,6 @@ cloudinary.config({
   api_secret: process.env.CLOUD_API_SECRET,
 });
 
-// export const cloudinaryuploads = (file, folder) => {
-//   return new Promise((resolve) => {
-//     cloudinary.uploader.upload(
-//       file,
-//       (result) => {
-//         resolve({
-//           url: result.url,
-//           id: result.public_id,
-//         });
-//       },
-//       {
-//         resource_type: "auto",
-//         folder: folder,
-//       }
-//     );
-//   });
-// };
-
 export const cloudinaryUploads = async (file, folder) => {
   try {
     const data = await cloudinary.uploader.upload(file, {
@@ -46,7 +28,6 @@ export const cloudinaryRemove = async (public_id) => {
   });
 };
 
-
 // export const cloudinaryuploads = (file, folder) => {
 //   return cloudinary.uploader
 //     .upload(file, {
@@ -61,4 +42,21 @@ export const cloudinaryRemove = async (public_id) => {
 //     .catch((error) => {
 //       console.log(error, "cloudinary uploads function");
 //     });
+// };
+// export const cloudinaryuploads = (file, folder) => {
+//   return new Promise((resolve) => {
+//     cloudinary.uploader.upload(
+//       file,
+//       (result) => {
+//         resolve({
+//           url: result.url,
+//           id: result.public_id,
+//         });
+//       },
+//       {
+//         resource_type: "auto",
+//         folder: folder,
+//       }
+//     );
+//   });
 // };

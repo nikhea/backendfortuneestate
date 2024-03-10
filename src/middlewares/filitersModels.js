@@ -28,70 +28,30 @@ export const filitersModels = (model) => {
         };
       }
     }
+    const queryParams = [
+      "propertyType",
+      "listingType",
+      "category",
+      "view",
+      "price",
+      "bathrooms",
+      "bedrooms",
+    ];
 
-    if (req.query.propertyType) {
-      match.$or = [
-        {
-          propertyType: req.query.propertyType,
-        },
-      ];
-    }
-    if (req.query.listingType) {
-      match.$or = [
-        {
-          listingType: req.query.listingType,
-        },
-      ];
-    }
-    if (req.query.category) {
-      match.$or = [
-        {
-          category: req.query.category,
-        },
-      ];
-    }
-
-    if (req.query.view) {
-      match.$or = [
-        {
-          view: req.query.view,
-        },
-      ];
-    }
-
-    if (req.query.price) {
-      let price = parseInt(req.query.price);
-
-      match.$or = [
-        {
-          price: { $gte: price },
-        },
-      ];
-    }
-    if (req.query.bathrooms) {
-      let bathrooms = parseInt(req.query.bathrooms);
-      console.log(bathrooms);
-      match.$or = [
-        {
-          bathrooms: { $gte: bathrooms },
-        },
-      ];
-    }
-    if (req.query.bedrooms) {
-      let bedrooms = parseInt(req.query.bedrooms);
-      match.$or = [
-        {
-          bedrooms: { $gte: bedrooms },
-        },
-      ];
-    }
-    // if (req.query.search) {
-    //   match.$or = [
-    //     {
-    //       title: SearchResult,
-    //     },
-    //   ];
-    // }
+    queryParams.forEach((param) => {
+      if (req.query[param]) {
+        switch (param) {
+          case "price":
+          case "bathrooms":
+          case "bedrooms":
+            match[param] = { $gte: parseInt(req.query[param]) };
+            break;
+          default:
+            match[param] = req.query[param];
+            break;
+        }
+      }
+    });
 
     try {
       let pipeline = [
@@ -164,6 +124,63 @@ export const filitersModels = (model) => {
     }
   };
 };
+
+// if (req.query.propertyType) {
+//   match.$or = [
+//     {
+//       propertyType: req.query.propertyType,
+//     },
+//   ];
+// }
+// if (req.query.listingType) {
+//   match.$or = [
+//     {
+//       listingType: req.query.listingType,
+//     },
+//   ];
+// }
+// if (req.query.category) {
+//   match.$or = [
+//     {
+//       category: req.query.category,
+//     },
+//   ];
+// }
+
+// if (req.query.view) {
+//   match.$or = [
+//     {
+//       view: req.query.view,
+//     },
+//   ];
+// }
+
+// if (req.query.price) {
+//   let price = parseInt(req.query.price);
+
+//   match.$or = [
+//     {
+//       price: { $gte: price },
+//     },
+//   ];
+// }
+// if (req.query.bathrooms) {
+//   let bathrooms = parseInt(req.query.bathrooms);
+//   match.$or = [
+//     {
+//       bathrooms: { $gte: bathrooms },
+//     },
+//   ];
+// }
+// if (req.query.bedrooms) {
+//   let bedrooms = parseInt(req.query.bedrooms);
+//   match.$or = [
+//     {
+//       bedrooms: { $gte: bedrooms },
+//     },
+//   ];
+// }
+
 // .find({ title: SearchResult })
 // .populate("country")
 // .populate("user", "-password")
@@ -205,3 +222,10 @@ export const filitersModels = (model) => {
 //   path: "user",
 //   select: ["-password"],
 // });
+// if (req.query.search) {
+//   match.$or = [
+//     {
+//       title: SearchResult,
+//     },
+//   ];
+// }
