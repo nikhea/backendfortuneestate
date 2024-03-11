@@ -187,8 +187,8 @@ export const getOneProperty = async (req, res, next) => {
 };
 
 export const getOnePropertyByName = async (req, res, next) => {
-  const { name } = req.params;
-  const { id } = req.body;
+  const { name, id } = req.params;
+  // const { id } = req.body;
 
   try {
     if (!id) {
