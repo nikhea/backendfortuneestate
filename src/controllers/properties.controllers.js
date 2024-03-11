@@ -185,6 +185,52 @@ export const getOneProperty = async (req, res, next) => {
     return res.json(response);
   }
 };
+
+export const getOnePropertyByName = async (req, res, next) => {
+  const { name } = req.params;
+  const { id } = req.body;
+
+  try {
+    if (!id) {
+      let response = {
+        success: false,
+        statuscode: 400,
+        message: "property id not passed",
+      };
+      return res.status(response.statuscode).json(response);
+    }
+    let property = await Properties.findOne({
+      _id: id,
+      title: name,
+    })
+      .populate("country")
+      .populate("user", "-password");
+    if (!property) {
+      let response = {
+        success: false,
+        statuscode: 400,
+        // data: property,
+        message: "property does not exist",
+      };
+      return res.status(response.statuscode).json(response);
+    } else if (property) {
+      let response = {
+        success: true,
+        statuscode: 200,
+        data: property,
+        message: "success",
+      };
+      return res.json(response);
+    }
+  } catch (error) {
+    let response = {
+      statuscode: 400,
+      error: [error],
+      message: "something failed ",
+    };
+    return res.json(response);
+  }
+};
 export const getPropertyofCountry = async (req, res, next) => {
   const name = req.params.name;
   try {
