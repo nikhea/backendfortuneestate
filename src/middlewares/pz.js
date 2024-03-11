@@ -1,3 +1,4 @@
+// http://localhost:4000/api/properties?page=1&limit=12&search=kkdjkadd&sort=-1
 export const filitersModels = (model) => {
   return async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
@@ -11,8 +12,7 @@ export const filitersModels = (model) => {
     let results = {};
 
     results.totalCount = await model.countDocuments().exec();
-    // results.totalPages = Math.ceil(results.totalCount);
-    // results.totalPages = Math.ceil(results.totalCount / limit);
+    results.totalPages = Math.ceil(results.totalCount / limit);
     if (req.query.page) {
       if (endIndex < (await model.countDocuments().exec())) {
         results.next = {
@@ -80,8 +80,6 @@ export const filitersModels = (model) => {
         }
       }
     });
-    results.totalCount = await model.countDocuments(match).exec();
-    results.totalPages = Math.ceil(results.totalCount / limit);
 
     try {
       let pipeline = [
@@ -153,3 +151,154 @@ export const filitersModels = (model) => {
     }
   };
 };
+// const search = req.query.search || model;
+// next: results.next,
+// previous: results.previous,
+// const queryParams = [
+//   "propertyType",
+//   "listingType",
+//   "category",
+//   "view",
+//   "price",
+//   "bathrooms",
+//   "bedrooms",
+// ];
+
+// queryParams.forEach((param) => {
+//   if (req.query[param]) {
+//     switch (param) {
+//       case "price":
+//       case "bathrooms":
+//       case "bedrooms":
+//         match[param] = { $gte: parseInt(req.query[param]) };
+//         break;
+//       default:
+//         match[param] = req.query[param];
+//         break;
+//     }
+//   }
+// });
+
+// if (req.query.propertyType) {
+//   match.$or = [
+//     {
+//       propertyType: req.query.propertyType,
+//     },
+//   ];
+// }
+// if (req.query.listingType) {
+//   match.$or = [
+//     {
+//       listingType: req.query.listingType,
+//     },
+//   ];
+// }
+// if (req.query.category) {
+//   match.$or = [
+//     {
+//       category: req.query.category,
+//     },
+//   ];
+// }
+
+// if (req.query.view) {
+//   match.$or = [
+//     {
+//       view: req.query.view,
+//     },
+//   ];
+// }
+
+// if (req.query.price) {
+//   let price = parseInt(req.query.price);
+
+//   match.$or = [
+//     {
+//       price: { $gte: price },
+//     },
+//   ];
+// }
+// if (req.query.bathrooms) {
+//   let bathrooms = parseInt(req.query.bathrooms);
+//   match.$or = [
+//     {
+//       bathrooms: { $gte: bathrooms },
+//     },
+//   ];
+// }
+// if (req.query.bedrooms) {
+//   let bedrooms = parseInt(req.query.bedrooms);
+//   match.$or = [
+//     {
+//       bedrooms: { $gte: bedrooms },
+//     },
+//   ];
+// }
+
+// .find({ title: SearchResult })
+// .populate("country")
+// .populate("user", "-password")
+// .where("propertyType")
+// .equals(propertyType)
+// .limit(limit)
+// .sort({ createdAt: sortby })
+// .skip(startIndex)
+// .exec();
+
+// .limit(limit)
+// .sort({ createdAt: sortby })
+// .skip(startIndex)
+// .exec();
+// .populate("country")
+// .populate("user", "-password");
+
+// .find({ title: SearchResult })
+// .populate("country")
+// .populate("user", "-password")
+// .where("propertyType")
+// .equals(propertyType)
+// .limit(limit)
+// .sort({ createdAt: sortby })
+// .skip(startIndex)
+// .exec();
+// .unwind('-$user.password')
+// .populate("country")
+// .populate("user", "-password")
+// .limit(limit)
+// .sort({ createdAt: sortby })
+// .skip(startIndex);
+
+// .aggregate(pipline)
+// results.results
+
+// results.results = await countries.populate(Modals, { path: "country" });
+// results.results = await users.populate(Modals, {
+//   path: "user",
+//   select: ["-password"],
+// });
+// if (req.query.search) {
+//   match.$or = [
+//     {
+//       title: SearchResult,
+//     },
+//   ];
+// }
+// const queryParams = {
+//   propertyType: "propertyType",
+//   listingType: "listingType",
+//   category: "category",
+//   view: "view",
+//   price: (value) => ({ price: { $gte: parseInt(value) } }),
+//   bathrooms: (value) => ({ bathrooms: { $gte: parseInt(value) } }),
+//   bedrooms: (value) => ({ bedrooms: { $gte: parseInt(value) } }),
+// };
+
+// Object.keys(queryParams).forEach((param) => {
+//   if (req.query[param]) {
+//     const filter =
+//       typeof queryParams[param] === "function"
+//         ? queryParams[param](req.query[param])
+//         : { [param]: req.query[param] };
+//     Object.assign(match, filter);
+//   }
+// });
