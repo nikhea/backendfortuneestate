@@ -72,7 +72,7 @@ router.get("/properties/:id", getOneProperty);
 // @desc      Get  all properties
 //@access     all
 //role        admin
-router.get("/properties/name/:name", getOnePropertyByName);
+router.get("/properties/:id/:name", getOnePropertyByName);
 // @route     GET api/properties
 // @desc      Get  all properties of A COUNTRY
 //@access     all
