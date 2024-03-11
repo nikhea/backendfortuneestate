@@ -5,6 +5,7 @@ import {
   OwnOneProperty,
   getSingerUserProperties,
   getOneProperty,
+  getOnePropertyByName,
   getPropertyofCountry,
   UpdateOneProperty,
   UpdateLikeProperty,
@@ -67,6 +68,11 @@ router.put("/properties/:id/like", loginRequired, UpdateLikeProperty);
 //role        admin
 router.get("/properties/:id", getOneProperty);
 
+// @route     GET api/properties
+// @desc      Get  all properties
+//@access     all
+//role        admin
+router.get("/properties/name/:name", getOnePropertyByName);
 // @route     GET api/properties
 // @desc      Get  all properties of A COUNTRY
 //@access     all
